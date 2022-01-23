@@ -16,9 +16,17 @@ TitleState::TitleState(){}
 
 void TitleState::Enter()
 {
-	cout << "enter titlestate" << endl;
 	
-	//hint load music track add it to map and play it
+	
+		cout << "enter titlestate" << endl;
+
+		//hint load music track add it to map and play it
+		m_DMCA = Mix_LoadMUS("Aud/DMCA.mp3");
+		m_sounds.emplace("DMCA", m_DMCA);
+		Mix_PlayMusic(m_DMCA, 2);
+		Mix_VolumeMusic(32);
+
+	
 
 	
 	
@@ -29,6 +37,7 @@ void TitleState::Update()
 {
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_N))
 	{
+
 		cout << "changing to gamestate" << endl;
 		STMA::ChangeState(new GameState() );
 	}
@@ -44,7 +53,7 @@ void TitleState::Render()
 void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
-	
+	Mix_FreeMusic(m_DMCA);
 //call Mix_FreeMusic on your music track
 }
 
@@ -56,6 +65,7 @@ PauseState::PauseState(){}
 
 void PauseState::Enter()
 {
+	
 	cout << "entering pausestate" << endl;
 }
 

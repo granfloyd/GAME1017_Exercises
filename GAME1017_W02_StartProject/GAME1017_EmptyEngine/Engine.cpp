@@ -27,6 +27,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 					Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
 					Mix_AllocateChannels(16);
 					//load sounds
+
 					 					
 				}
 				else return false; //mixer init failed
@@ -41,7 +42,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	m_keystates = SDL_GetKeyboardState(nullptr);
 	STMA::ChangeState(new TitleState() );
 	cout << "Initialization successful!" << endl;
-	Mix_VolumeMusic(128); // 0-128.
+	//Mix_VolumeMusic(128); // 0-128.
 	m_running = true;
 	return true;
 }

@@ -2,6 +2,8 @@
 #include "StateManager.h"
 #include "Engine.h"
 #include <iostream>
+
+
 using namespace std;
 
 void State::Render()
@@ -15,7 +17,12 @@ TitleState::TitleState(){}
 void TitleState::Enter()
 {
 	cout << "enter titlestate" << endl;
+	
 	//hint load music track add it to map and play it
+
+	
+	
+	
 }
 
 void TitleState::Update()
@@ -37,6 +44,7 @@ void TitleState::Render()
 void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
+	
 //call Mix_FreeMusic on your music track
 }
 
@@ -81,6 +89,7 @@ GameState::GameState(){}
 void GameState::Enter()
 {
 	cout << "entering gamestate" << endl;
+
 	//load music sfx add them to map
 	//load music track add it to map and play it
 }
@@ -111,6 +120,7 @@ void GameState::Render()
 void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
+	
 }
 
 void GameState::Resume()

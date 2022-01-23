@@ -26,17 +26,8 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 					//configure mixer
 					Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
 					Mix_AllocateChannels(16);
-					//add sound pointers to map
-					//m_sounds.emplace("", new Mix_Chunk);
-					//m_sounds.emplace("", new Mix_Chunk);
-					//m_sounds.emplace("", new Mix_Chunk);
-					//m_sounds.emplace("", new Mix_Chunk);
 					//load sounds
-					//m_sounds[""] = Mix_LoadWAV("Aud/");
-					//m_sounds[""] = Mix_LoadWAV("Aud/");
-					//m_sounds[""] = Mix_LoadWAV("Aud/");
-					//m_sounds[""] = Mix_LoadWAV("Aud/");
-					//m_mask = Mix_loadMUS("Aud/);
+					 					
 				}
 				else return false; //mixer init failed
 
@@ -50,6 +41,7 @@ int Engine::Init(const char* title, int xPos, int yPos, int width, int height, i
 	m_keystates = SDL_GetKeyboardState(nullptr);
 	STMA::ChangeState(new TitleState() );
 	cout << "Initialization successful!" << endl;
+	Mix_VolumeMusic(128); // 0-128.
 	m_running = true;
 	return true;
 }
@@ -141,7 +133,7 @@ void Engine::Clean()
 	cout << "Cleaning engine..." << endl;
 	STMA::Quit();
 	SDL_DestroyRenderer(m_pRenderer);
-	SDL_DestroyWindow(m_pWindow);
+	SDL_DestroyWindow(m_pWindow);	
 	Mix_CloseAudio();
 	Mix_Quit();
 	IMG_Quit();

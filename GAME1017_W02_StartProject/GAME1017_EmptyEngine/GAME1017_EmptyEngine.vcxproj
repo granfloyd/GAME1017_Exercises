@@ -150,6 +150,10 @@
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="States.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Aud\DMCA.mp3" />
+    <Media Include="Aud\Free.mp3" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

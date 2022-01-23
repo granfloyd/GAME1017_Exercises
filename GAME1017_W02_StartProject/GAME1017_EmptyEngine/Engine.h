@@ -21,9 +21,13 @@ private: // private properties.
 	const Uint8* m_keystates;
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
+	
 
 private: // private method prototypes.
-	//Engine() { cout << "Engine object created..." << endl; }
+	Engine()
+	{ 
+		cout << "creating instance of engine..." << endl;
+	}
 	int Init(const char* title, int xPos, int yPos, int width, int height, int flags);
 	void Clean();
 	void Wake();
@@ -34,7 +38,7 @@ private: // private method prototypes.
 	void Sleep();
 
 public: // public method prototypes.
-	Engine() {}
+	//Engine() {}
 	int Run();
 	// Add static method for singleton here
 	static Engine& Instance();

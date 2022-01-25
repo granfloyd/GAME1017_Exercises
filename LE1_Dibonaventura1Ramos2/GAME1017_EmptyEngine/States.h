@@ -16,11 +16,11 @@ class State//this is the abstract base class for all state subclasses
 protected: //priv but inherited
 
 	State() = default;//or... State(){};
-	//Mix_Music* m_DMCA;
+	Mix_Music* m_DMCA;
 	Mix_Music* m_Gasoline1;
 	Mix_Chunk* m_Superpartypc;
 	Mix_Chunk* m_Free;
-	bool m_playing = true;
+	
 	
 	
 	
@@ -82,6 +82,17 @@ public:
 	virtual void Render();
 	virtual void Exit();
 	virtual void Resume();
+
+};
+class EndState : public State
+{
+
+public:
+	EndState();
+	virtual void Enter();
+	virtual void Update();
+	virtual void Render();
+	virtual void Exit();
 
 };
 //add endstatehere

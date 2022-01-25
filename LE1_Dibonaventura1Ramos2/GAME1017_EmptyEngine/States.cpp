@@ -15,16 +15,18 @@ TitleState::TitleState(){}
 
 
 void TitleState::Enter()
-{
-	
+{	
 		cout << "enter titlestate" << endl;
-
 		//load music track add it to map and play it
+		m_DMCA = Mix_LoadMUS("Aud/DMCA.mp3");
+		m_sounds.emplace("DMCA", m_DMCA);
+		Mix_PlayMusic(m_DMCA, -1);
+		Mix_VolumeMusic(32);
 
-		m_Gasoline1 = Mix_LoadMUS("Aud/Gasoline1.mp3");
+		/*m_Gasoline1 = Mix_LoadMUS("Aud/Gasoline1.mp3");
 		m_sounds.emplace("Gasoline1", m_Gasoline1);
 		Mix_PlayMusic(m_Gasoline1, -1);
-		Mix_VolumeMusic(32);
+		Mix_VolumeMusic(32);*/
 	
 }
 
@@ -48,7 +50,7 @@ void TitleState::Render()
 void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
-	Mix_FreeMusic(m_Gasoline1);
+	Mix_FreeMusic(m_DMCA);
 //call Mix_FreeMusic on your music track
 }
 
@@ -136,6 +138,12 @@ void GameState::Update()
 		{
 			Mix_PlayChannel(3, m_sfx["Free"], 0);
 		}
+		if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
+		{
+
+			cout << "changing to gamestate" << endl;
+			STMA::ChangeState(new EndState());
+		}
 	//parse 'X' key and change state to new endstate
 	//parse 1 key and play first sfx
 	//parse 2 key and play second sfx
@@ -155,6 +163,7 @@ void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
 	Mix_FreeMusic(m_Gasoline1);
+	Mix_FreeMusic(m_DMCA);
 	Mix_FreeChunk(m_Superpartypc);
 	Mix_FreeChunk(m_Free);
 	
@@ -167,4 +176,35 @@ void GameState::Resume()
 		Mix_ResumeMusic();
 	//resume music track
 	
+}
+
+EndState::EndState(){}
+
+void EndState::Enter()
+{
+	cout << "entering endstate" << endl;
+}
+
+void EndState::Update()
+{
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+	{
+
+		cout << "changing to gamestate" << endl;
+		STMA::ChangeState(new TitleState());
+	}
+
+}
+
+void EndState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 69, 100, 200, 230);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+	State::Render();
+
+}
+
+void EndState::Exit()
+{
+	cout << "exitinggamestate" << endl;
 }

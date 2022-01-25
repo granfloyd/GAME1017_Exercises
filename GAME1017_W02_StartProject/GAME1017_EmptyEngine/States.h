@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -13,7 +14,16 @@ using namespace std;
 class State//this is the abstract base class for all state subclasses
 {
 protected: //priv but inherited
+
 	State() = default;//or... State(){};
+	//Mix_Music* m_DMCA;
+	Mix_Music* m_Gasoline1;
+	Mix_Chunk* m_Superpartypc;
+	Mix_Chunk* m_Free;
+	bool m_playing = true;
+	
+	
+	
 public:
 	
 	virtual void Enter() = 0;
@@ -28,9 +38,7 @@ public:
 class TitleState : public State
 {
 private:
-	//map for music track goes here
-	
-	Mix_Music* m_DMCA;
+	//map for music track goes here	
 	map<string, Mix_Music*> m_sounds;
 	
 public:
@@ -62,10 +70,9 @@ public:
 
 class GameState : public State
 {
-private:
-	
-	
-	
+private:	
+	map<string, Mix_Music*>m_sounds;
+	map<string, Mix_Chunk*>m_sfx;
 	//map for music track goes here
 	//map for sfx goes here
 public:

@@ -153,6 +153,9 @@
   <ItemGroup>
     <Media Include="Aud\DMCA.mp3" />
     <Media Include="Aud\Free.mp3" />
+    <Media Include="Aud\Gasoline.mp3" />
+    <Media Include="Aud\Gasoline1.mp3" />
+    <Media Include="Aud\superpartypcvoice.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

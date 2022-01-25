@@ -17,19 +17,14 @@ TitleState::TitleState(){}
 void TitleState::Enter()
 {
 	
-	
 		cout << "enter titlestate" << endl;
 
-		//hint load music track add it to map and play it
-		m_DMCA = Mix_LoadMUS("Aud/DMCA.mp3");
-		m_sounds.emplace("DMCA", m_DMCA);
-		Mix_PlayMusic(m_DMCA, 2);
+		//load music track add it to map and play it
+
+		m_Gasoline1 = Mix_LoadMUS("Aud/Gasoline1.mp3");
+		m_sounds.emplace("Gasoline1", m_Gasoline1);
+		Mix_PlayMusic(m_Gasoline1, -1);
 		Mix_VolumeMusic(32);
-
-	
-
-	
-	
 	
 }
 
@@ -53,7 +48,7 @@ void TitleState::Render()
 void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
-	Mix_FreeMusic(m_DMCA);
+	Mix_FreeMusic(m_Gasoline1);
 //call Mix_FreeMusic on your music track
 }
 
@@ -67,6 +62,7 @@ void PauseState::Enter()
 {
 	
 	cout << "entering pausestate" << endl;
+	
 }
 
 void PauseState::Update()
@@ -90,6 +86,8 @@ void PauseState::Render()
 void PauseState::Exit()
 {
 	cout << "exiting pausestate" << endl;
+	
+	
 }
 
 
@@ -99,19 +97,45 @@ GameState::GameState(){}
 void GameState::Enter()
 {
 	cout << "entering gamestate" << endl;
-
-	//load music sfx add them to map
+     //load music sfx add them to map
 	//load music track add it to map and play it
+	m_Gasoline1 = Mix_LoadMUS("Aud/Gasoline1.mp3");
+	m_sounds.emplace("Gasoline1", m_Gasoline1);
+	Mix_PlayMusic(m_Gasoline1, -1);
+	Mix_VolumeMusic(32);
+
+	m_Superpartypc = Mix_LoadWAV("Aud/superpartypcvoice.mp3");
+	m_sfx.emplace("Superpartypc", m_Superpartypc);
+
+	m_Free = Mix_LoadWAV("Aud/Free.mp3");
+	m_sfx.emplace("Free", m_Free);
+
+	//superpartypc 
+	Mix_Volume(2, 12);
+	
+	//free
+	Mix_Volume(3, 39);
 }
 
 void GameState::Update()
 {
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_P))
-	{
-		cout << "Changing to PauseState" << endl;
-		//pause the music track
-		STMA::PushState(new PauseState());
-	}
+	
+		if (Engine::Instance().KeyDown(SDL_SCANCODE_P))
+		{
+			cout << "Changing to PauseState" << endl;
+			//pause the music track
+			STMA::PushState(new PauseState());
+			Mix_PauseMusic();
+		}
+		else if (Engine::Instance().KeyDown(SDL_SCANCODE_1))
+		{
+			Mix_PlayChannel(2, m_sfx["Superpartypc"], 0);
+
+		}
+		else if (Engine::Instance().KeyDown(SDL_SCANCODE_2))
+		{
+			Mix_PlayChannel(3, m_sfx["Free"], 0);
+		}
 	//parse 'X' key and change state to new endstate
 	//parse 1 key and play first sfx
 	//parse 2 key and play second sfx
@@ -130,11 +154,17 @@ void GameState::Render()
 void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
+	Mix_FreeMusic(m_Gasoline1);
+	Mix_FreeChunk(m_Superpartypc);
+	Mix_FreeChunk(m_Free);
 	
 }
 
 void GameState::Resume()
 {
 	cout << "resuming gamestate" << endl;
+	if (Mix_PausedMusic() == true)
+		Mix_ResumeMusic();
 	//resume music track
+	
 }

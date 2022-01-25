@@ -46,5 +46,14 @@
     <Media Include="Aud\Free.mp3">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="Aud\Gasoline.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Aud\Gasoline1.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Aud\superpartypcvoice.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

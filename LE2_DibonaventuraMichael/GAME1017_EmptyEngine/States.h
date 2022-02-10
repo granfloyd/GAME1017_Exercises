@@ -4,7 +4,8 @@
 #include "Turret.h"
 #include "Enemy.h"
 #include <vector>
-
+#include "tinyxml2.h"
+using namespace tinyxml2;
 // An abstract class is one that cannot be instantiated. 
 // Why? Because they'd be a base class most likely.
 class State // This is the abstract base class for all state subclasses.
@@ -48,6 +49,11 @@ private:
 	static std::vector<Bullet*> s_bullets;
 	int m_spawnCtr;
 	void ClearTurrets();
+
+	XMLDocument xmldoc;
+	XMLNode* pRoot;
+	XMLElement* pElementvroom;
+
 public: // Public methods.
 	GameState();
 	virtual void Enter();

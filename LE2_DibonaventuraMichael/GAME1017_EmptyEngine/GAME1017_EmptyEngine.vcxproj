@@ -170,9 +170,6 @@
     <Image Include="Img\Enemies.png" />
     <Image Include="Img\Turret.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="Vroom.xml" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

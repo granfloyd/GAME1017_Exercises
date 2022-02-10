@@ -1,7 +1,10 @@
 #include "Bullet.h"
 #include "Engine.h"
 
+
+
 Bullet::Bullet(SDL_FRect dst, double dx, double dy):m_dst(dst), m_dx(dx), m_dy(dy) { }
+
 
 void Bullet::Update()
 {

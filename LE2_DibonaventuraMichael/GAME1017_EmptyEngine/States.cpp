@@ -4,11 +4,12 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 #include "Engine.h"
+#include "Bullet.h"
 #include "tinyxml2.h"
 #include <string>
 #include "CollisionManager.h"
 #include "MathManager.h"
-using namespace tinyxml2;
+
 using namespace std;
 
 void State::Render()
@@ -92,12 +93,23 @@ void GameState::Enter()
 	TEMA::Load("Img/Turret.png", "turret");
 	TEMA::Load("Img/Enemies.png", "enemy");
 	s_enemies.push_back(new Enemy({ 512, -200, 40, 57 }));
-	// Create the DOM and load the XML file.
-	// Iterate through the Turret elements in the file and push_back new Turrets into the m_turrets vector.
-	//last 2 ex from week 3
+	//// Create the DOM and load the XML file.
+	//// Iterate through the Turret elements in the file and push_back new Turrets into the m_turrets vector.
+	////last 2 ex from week 3
+	
+	xmldoc.LoadFile("Vroom.xml");
+	pRoot = xmldoc.FirstChildElement("Root");
+	pElementvroom = pRoot->FirstChildElement("Turret");
+	while (pElementvroom != nullptr)
+	{
+		int x, y;
+		pElementvroom->QueryIntAttribute("PositionX", &x);
+		pElementvroom->QueryIntAttribute("PositionY", &y);
+		Turret* temp = new Turret({ x,y,100,100 });
+		m_turrets.push_back(temp);
 
-	//XMLDocument xmlDoc;
-	//xmlDoc.LoadFile("Vroom.xml");
+		pElementvroom = pElementvroom->NextSiblingElement("Turret");
+	}
 	
 
 }
@@ -126,17 +138,6 @@ void GameState::Update()
 		s_bullets[i]->Update();
 
 	// Cleanup bullets and enemies that go off screen.
-
-	 //for all bullets
-	   // if bullet goes off sceen (four bounds checks)
-	      // delete bullet[i]
-	      // set bullet[i] to nullptr
-		 
-      // for all enemies	
-	   // if enemy goes off sceen (four bounds checks)
-	       // delete enemy[i]
-	       // set bullet[i] to nullptr
-	
 	
 	// Check for collisions with bullets and enemies.
 	//for all bullets 
@@ -159,8 +160,7 @@ void GameState::Update()
 				s_enemies[j] = nullptr;
 				s_enemies.erase(s_enemies.begin() + j);
 				s_enemies.shrink_to_fit();
-				break;
-				
+				break;				
 				
 			}
 			
@@ -168,33 +168,8 @@ void GameState::Update()
 		
 	}
 	//if no enemies on screen the game crashes 
-	//if (s_enemies[j]->Hits() == 2)
-		//s_enemies[j]->Hits()++;
 	
-	//XMLDocument xmlDoc;
-	//xmlDoc.LoadFile("Vroom.xml");
-	//XMLElement* pRoot = xmlDoc.FirstChildElement();
-	//// Now let's create objects from the XML file.
-	//XMLElement* pElement = pRoot->FirstChildElement();
-	//while (pElement != nullptr)
-	//{
-	//	cout << "I see a " << pElement->Value() << endl;
-	//	if (strcmp(pElement->Value(), "Turret") == 0)
-	//	{
-	//		const char* n; // Holds "Foo"
-	//		pElement->QueryStringAttribute("name", &n); // "Gets" what'stored in name
-	//		int h, s;
-	//		pElement->QueryIntAttribute("health", &h);
-	//		pElement->QueryIntAttribute("speed", &s);
-	//		Turret* temp = new Turret(n, h, s);
-	//		m_turrets.push_back(temp);
-	//	}
-	//	
-	//}
-	//	pElement = pElement->NextSiblingElement();
-	//	for (int i = 0; i < (int)m_turrets.size(); i++)
-	//		cout << (m_turrets[i]) << endl;
-	
+
 }
 
 void GameState::Render()
@@ -223,6 +198,17 @@ void GameState::Exit()
 	// You can clear all children of the root node by calling .DeleteChildren(); and this will essentially clear the DOM.
 	// Iterate through all the turrets and save their positions as child elements of the root node in the DOM.
 	// Make sure to save to the XML file.
+	xmldoc.DeleteChildren();
+	pRoot = xmldoc.NewElement("Root");
+	xmldoc.InsertEndChild(pRoot);
+	for (unsigned i = 0; i < m_turrets.size(); i++)
+	{
+		pElementvroom = xmldoc.NewElement("Turret");
+		pElementvroom->SetAttribute("PositionX", m_turrets[i]->GetPos().x);
+		pElementvroom->SetAttribute("PositionY", m_turrets[i]->GetPos().y);
+		pRoot->InsertEndChild(pElementvroom);
+	}
+	xmldoc.SaveFile("Vroom.xml");
 	ClearTurrets();
 	for (unsigned i = 0; i < s_enemies.size(); i++)
 	{

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "MathManager.h"
+#include "States.h"
 
 class CollisionManager
 {

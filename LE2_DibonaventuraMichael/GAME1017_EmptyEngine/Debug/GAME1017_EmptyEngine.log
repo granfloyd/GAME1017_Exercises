@@ -1,1 +1,6 @@
-﻿  GAME1017_EmptyEngine.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_Dibonaventura1Ramos2\Debug\GAME1017_EmptyEngine.exe
+﻿  Turret.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_DibonaventuraMichael\GAME1017_EmptyEngine\Turret.cpp(41,37): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_DibonaventuraMichael\GAME1017_EmptyEngine\Turret.cpp(41,37): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_DibonaventuraMichael\GAME1017_EmptyEngine\Turret.cpp(41,64): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_DibonaventuraMichael\GAME1017_EmptyEngine\Turret.cpp(41,64): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  GAME1017_EmptyEngine.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE2_DibonaventuraMichael\Debug\GAME1017_EmptyEngine.exe

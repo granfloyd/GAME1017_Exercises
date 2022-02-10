@@ -8,7 +8,7 @@
 class Turret
 {
 private:
-	SDL_Rect m_src, m_dst;
+	SDL_Rect m_src, m_dst;//set x and y of m_dst to/from XML
 	SDL_Point m_startPos;
 	double m_angle;
 	bool m_hasTarget;

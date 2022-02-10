@@ -5,7 +5,8 @@
 #include "TextureManager.h"
 #include "EventManager.h"
 #include "MathManager.h"
-
+#include <iostream>
+using namespace std;
 int Turret::s_coolDown = 120;
 
 Turret::Turret(SDL_Rect dst) :m_dst(dst), m_src({ 0,0,100,100 }), m_angle(0.0), m_hasTarget(false), m_fireCtr(0)
@@ -21,6 +22,7 @@ void Turret::Update()
 		{
 			m_dst.x = EVMA::GetMousePos().x - m_dst.w / 2;
 			m_dst.y = EVMA::GetMousePos().y - m_dst.h / 2;
+			cout << m_dst.x <<", "<< m_dst.y << endl;
 		}
 	}
 	m_angle = 0;

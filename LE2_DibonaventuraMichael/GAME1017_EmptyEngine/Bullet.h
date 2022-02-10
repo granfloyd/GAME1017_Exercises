@@ -12,6 +12,7 @@ private:
 
 public:
 	Bullet(SDL_FRect dst, double dx, double dy);
+	SDL_FRect getDst() { return m_dst; }
 	void Update();
 	void Render();
 };

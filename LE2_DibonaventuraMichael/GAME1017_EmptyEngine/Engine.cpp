@@ -103,8 +103,7 @@ void Engine::Clean()
 	STMA::Quit();
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
-	EVMA::Quit();
-	STMA::Quit();
+	EVMA::Quit();	
 	TEMA::Quit();
 	IMG_Quit();
 	SDL_Quit();

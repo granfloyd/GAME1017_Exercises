@@ -149,24 +149,27 @@ void GameState::Update()
 		{
 			if (CollisionManager::AABBCheck(s_enemies[j]->getDst(), s_bullets[i]->getDst()))
 			{
+			
 				delete s_bullets[i];
-			    s_bullets[i] = nullptr;
+				s_bullets[i] = nullptr;
 				s_bullets.erase(s_bullets.begin() + i);
-				s_bullets.shrink_to_fit();
-				break;
-			}
-			s_enemies[j]->Hits()++;
-			if(s_enemies[j]->Hits() = 1)
-			{
+				s_bullets.shrink_to_fit();		
+
 				delete s_enemies[j];
 				s_enemies[j] = nullptr;
 				s_enemies.erase(s_enemies.begin() + j);
 				s_enemies.shrink_to_fit();
 				break;
+				
+				
 			}
+			
 		}
 		
 	}
+	//if no enemies on screen the game crashes 
+	//if (s_enemies[j]->Hits() == 2)
+		//s_enemies[j]->Hits()++;
 	
 	//XMLDocument xmlDoc;
 	//xmlDoc.LoadFile("Vroom.xml");

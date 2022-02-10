@@ -9,7 +9,7 @@ class Enemy
 private:
 	SDL_Rect m_src, m_dst;
 	int m_speed;
-	int m_hits =0;
+	int m_hits;
 
 public:
 	Enemy(SDL_Rect dst);

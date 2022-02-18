@@ -132,11 +132,6 @@ void GameState::Update()
 		i.second->Update();
 		if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
 	}
-	// Check collision. Player vs. asteroids.
-	//if (GetGo("ship") != nullptr)
-	//{
-	//	// BUT OUR CODE IS IN ANOTHER CASTLE!
-	//}
 	// Check collision. 
 	if (GetGo("ship") != nullptr)
 	{
@@ -168,14 +163,26 @@ void GameState::Update()
 				if (COMA::CircleCircleCheck(bul->GetCenter(), ast->GetCenter(),
 					bul->GetRadius(), ast->GetRadius()))
 				{
-					SOMA::PlaySound("explode");
-					// New asteroid chunk spawn code. Hints:
-					
-					// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
-					// As yourself why the bullet and asteroid that are colliding are only getting destroyed AFTER the two chunks spawn.
-					// What data can you get from the bullet and asteroid that the chunks need?
+					SOMA::PlaySound("explode");	
+					//new asteroid spawn code
+					if (ast->GetSize() > 0)
+					{
+						double angle = bul->GetAngle();
+						Asteroid* left = new Asteroid({ 539,0,61,66 },
+							{ ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f });
+						
+						Asteroid* right = new Asteroid({ 539,0,61,66 },
+							{ ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f });
+						
+						left->UpdateDeltas(angle - (30.0 + rand() % 16));
+						left->GetSize() = ast->GetSize() - 1;						
 
-					// End new chunk spawn code.
+						right->UpdateDeltas(angle + (30.0 + rand() % 16));
+					    right->GetSize() = ast->GetSize() - 1;
+
+						field->push_back(left);
+						field->push_back(right);
+					}
 					delete bul;
 					bullets->erase(bullets->begin() + i);
 					bullets->shrink_to_fit();
@@ -188,7 +195,11 @@ void GameState::Update()
 		}
 	}
 }
-
+// New asteroid chunk spawn code. Hints:
+// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
+// Ask yourself why the bullet and asteroid that are colliding are only getting destroyed AFTER the two chunks spawn.
+// What data can you get from the bullet and asteroid that the chunks need?
+// End new chunk spawn code.
 void GameState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);

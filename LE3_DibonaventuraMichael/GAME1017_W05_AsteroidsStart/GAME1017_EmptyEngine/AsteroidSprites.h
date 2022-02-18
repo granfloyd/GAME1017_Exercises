@@ -10,11 +10,14 @@ class Asteroid : public SpriteObject
 {
 public:
 	Asteroid(SDL_Rect s, SDL_FRect d);
-	void Update();
-	void Render();
+	void Update();	
+	void Render();	
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
 	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
+    int& GetSize() { return m_size; }
+	void UpdateDeltas(double angle);
+	
 private:
 	SDL_FPoint m_center;
 	double m_angle,
@@ -22,6 +25,8 @@ private:
 		m_radius,
 		m_rotSpeed;
 	Uint8 m_rMod, m_gMod, m_bMod;
+	//new field 2->1->gone
+	int m_size;
 };
 
 class AsteroidField : public GameObject
@@ -43,9 +48,10 @@ class Bullet : public SpriteObject
 public:
 	Bullet(SDL_Rect s, SDL_FRect d, const char* key, const double angle);
 	void Update();
-	void Render();
+	void Render();	
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
+	double GetAngle() { return m_angle; }
 private:
 	SDL_FPoint m_center;
 	int m_ctr, m_ctrMax;

@@ -5,7 +5,7 @@
 #include "MathManager.h"
 
 Asteroid::Asteroid(SDL_Rect s, SDL_FRect d) : SpriteObject(s, d),
-m_angle(0.0), m_radius(33.0)
+m_angle(0.0), m_radius(33.0),m_size(2)
 {
 	m_center = { (m_dst.x + m_dst.w / 2.0f), (m_dst.y + m_dst.h / 2.0f) };
 	m_rotSpeed = (1.0 + rand() % 5) * (rand() % 2 * 2.0 - 1.0); // -1 or 1
@@ -39,6 +39,12 @@ void Asteroid::Render()
 void Asteroid::SetColMods(Uint8 r, Uint8 g, Uint8 b)
 {
 	m_rMod = r; m_gMod = g; m_bMod = b;
+}
+
+
+void Asteroid::UpdateDeltas(double angle)
+{
+	MAMA::SetDeltas(MAMA::Deg2Rad(angle - 90.0), m_dx, m_dy, 2.0f, 2.0f);
 }
 
 AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(sz)

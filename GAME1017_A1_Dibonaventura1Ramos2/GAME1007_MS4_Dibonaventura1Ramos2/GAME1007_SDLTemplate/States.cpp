@@ -46,6 +46,11 @@ TitleState::TitleState(){}
 void TitleState::Enter()
 {	
 		cout << "enter titlestate" << endl;	
+		m_pTitletheme = Mix_LoadMUS("aud/Titletheme.mp3");//gametheme
+		m_pTitle = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
+		bgSrc = { 0,0,1024,768 };
+		Mix_PlayMusic(m_pTitletheme, -1);
+		Mix_VolumeMusic(24); //0-128
 }
 
 void TitleState::Update()
@@ -59,15 +64,18 @@ void TitleState::Update()
 
 void TitleState::Render()
 {
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),0,0,255,255);
+	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),0,0,255,255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitle,NULL,NULL);	
+	if (dynamic_cast<TitleState*>(STMA::GetStates().back()))//if current state is gamestate
 	State::Render();
 }
 
 void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
-	
+	Mix_FreeMusic(m_pTitletheme);
+	SDL_DestroyTexture(m_pTitle);
 }
 
 

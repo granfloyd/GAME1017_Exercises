@@ -32,8 +32,9 @@ public:
 class TitleState : public State
 {
 private:
-	
-	
+	Mix_Music* m_pTitletheme;
+	SDL_Texture* m_pTitle;
+	SDL_Rect bgSrc, bgDst;
 public:
 	TitleState();
 	virtual void Enter();
@@ -87,7 +88,7 @@ private:
 	Mix_Chunk* m_peShoot; // myMap["Short.mp3"]
 	Mix_Chunk* m_pLaser;
 	Mix_Music* m_pMaintheme;
-	//Mix_Music* m_pTitletheme;
+	
 
 	SDL_Rect m_player; // For primitive rectangle.d
 	SDL_Rect m_src, m_dst; // For the ship sprite.

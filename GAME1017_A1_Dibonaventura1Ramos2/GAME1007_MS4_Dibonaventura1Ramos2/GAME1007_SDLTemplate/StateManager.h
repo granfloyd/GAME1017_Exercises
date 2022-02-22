@@ -10,6 +10,7 @@ class StateManager //this is our finite state machine FSM
 {
 private:
 	static std::vector<State*> s_states;//s_ is my convention for static properties
+	static bool s_stateChange;
 private:
 	StateManager() = default;
 public:
@@ -20,6 +21,7 @@ public:
 	static void ChangeState(State* pState);
 	static void Quit();
 	static std::vector<State*>& GetStates();//getter for the s_states
+	static const bool StateChanging();
 };
 typedef StateManager STMA;
 #endif

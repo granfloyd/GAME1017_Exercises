@@ -2,9 +2,10 @@
 #include "StateManager.h"
 #include "Engine.h"
 #include "EventManager.h"
+#include "Button3.h"
+#include "TextureManager.h"
+
 #include <iostream>
-
-
 using namespace std;
 
 Missile::Missile(int x, int y)
@@ -34,6 +35,29 @@ void Enemy::resetFrames()
 }
 
 
+GameObject* State::GetGo(const std::string& s)
+{ // Using 'std' just to show origin.
+	auto it = std::find_if(m_objects.begin(), m_objects.end(),
+		// Lambda expression/function. An in-function function.
+		[&](const std::pair<std::string, GameObject*>& element)
+		{
+			return element.first == s;
+		}
+	); // End of find_if.
+	if (it != m_objects.end())
+		return it->second;
+	else return nullptr;
+}
+
+auto State::GetIt(const std::string& s)
+{
+	auto it = std::find_if(m_objects.begin(), m_objects.end(),
+		[&](const std::pair<std::string, GameObject*>& element)
+		{
+			return element.first == s;
+		});
+	return it;
+}
 
 void State::Render()
 {
@@ -48,9 +72,14 @@ void TitleState::Enter()
 		cout << "enter titlestate" << endl;	
 		m_pTitletheme = Mix_LoadMUS("aud/Titletheme.mp3");//gametheme
 		m_pTitle = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
-		bgSrc = { 0,0,1024,768 };
+		TEMA::Load("play.png", "play");
+		m_objects.push_back(pair<string, GameObject*>("play",
+			new PlayButton({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "play")));
+		//play = IMG_LoadTexture(Engine::Instance().GetRenderer(), "play.png");
+		//playSrc = { 0,0,100,50 };
+		//playDst = { 333,440,250,100 };
 		Mix_PlayMusic(m_pTitletheme, -1);
-		Mix_VolumeMusic(24); //0-128
+		Mix_VolumeMusic(15); //0-128
 }
 
 void TitleState::Update()
@@ -60,6 +89,11 @@ void TitleState::Update()
 		cout << "changing to gamestate" << endl;
 		STMA::ChangeState(new GameState());
 	}
+	for (auto const& i : m_objects)
+	{
+		i.second->Update();
+		if (STMA::StateChanging()) return;
+	}
 }
 
 void TitleState::Render()
@@ -67,6 +101,9 @@ void TitleState::Render()
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),0,0,255,255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitle,NULL,NULL);	
+	for (auto const& i : m_objects)
+		i.second->Render();
+	//SDL_RenderCopy(Engine::Instance().GetRenderer(), play, &playSrc, &playDst);
 	if (dynamic_cast<TitleState*>(STMA::GetStates().back()))//if current state is gamestate
 	State::Render();
 }
@@ -76,6 +113,13 @@ void TitleState::Exit()
 	cout << "exiting titlestate" << endl;
 	Mix_FreeMusic(m_pTitletheme);
 	SDL_DestroyTexture(m_pTitle);
+	TEMA::Unload("play");
+	for (auto& i : m_objects)
+	{
+		delete i.second;
+		i.second = nullptr; // ;)
+	}
+	//SDL_DestroyTexture(play);
 }
 
 
@@ -131,8 +175,8 @@ void GameState::Enter()
 	//m_pMaintheme = Mix_LoadMUS("aud/MainThemeGAME1017.mp3");//title theme
 	m_pMaintheme = Mix_LoadMUS("aud/GAMETHEME.mp3");//gametheme
 	Mix_PlayMusic(m_pMaintheme, -1);
-	Mix_VolumeMusic(24); //0-128
-	Mix_Volume(-1, 32); //-1 means all channels
+	Mix_VolumeMusic(15); //0-128
+	Mix_Volume(-1, 28); //-1 means all channels
 
 	m_src = { 0, 0, 250, 270 }; // Clips out entire image.
 	m_dst = { WIDTH / 2, HEIGHT / 2, 154, 221 }; // On screen location/appearance.
@@ -154,34 +198,28 @@ void GameState::Enter()
 void GameState::Update()
 {
 	
-		if (EVMA::KeyPressed(SDL_SCANCODE_P))
-		{
-			cout << "Changing to PauseState" << endl;
-			//pause the music track
-			STMA::PushState(new PauseState());
-			Mix_PauseMusic();
-		}
-	
-			if (EVMA::KeyPressed(SDL_SCANCODE_SPACE))
-			{
-				if (m_isAlive == true)
-				{
-					// Fire dynamic Missile.
-					m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
-					m_playerpew.shrink_to_fit();
-					Mix_PlayChannel(-1, m_pShoot, 0);
-					cout << "pew " << endl;
-				}
-
-			}
-			
-		
-		
-		
-		
+	if (EVMA::KeyPressed(SDL_SCANCODE_P))
+	{
+		cout << "Changing to PauseState" << endl;
+		//pause the music track
+		STMA::PushState(new PauseState());
+		Mix_PauseMusic();
+	}
+	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE))
+	{
 		if (m_isAlive == true)
 		{
-			if (EVMA::KeyHeld(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))
+			// Fire dynamic Missile.
+			m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
+			m_playerpew.shrink_to_fit();
+			Mix_PlayChannel(-1, m_pShoot, 0);
+			cout << "pew " << endl;
+		}
+
+	}
+		if (m_isAlive == true)
+		{
+			if (EVMA::KeyHeld(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))				
 				m_dst.y += SPEED;
 			if (EVMA::KeyHeld(SDL_SCANCODE_W) && m_dst.y > 0)
 				m_dst.y -= SPEED;
@@ -324,6 +362,7 @@ void GameState::Update()
 				m_missile[i] = nullptr; // Ensures no dangling pointer.
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
+				STMA::ChangeState(new EndState());
 				break;
 			}
 		}
@@ -336,8 +375,10 @@ void GameState::Update()
 
 				m_isAlive = false;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
+				STMA::ChangeState(new EndState());
 			}
 		}
+
 		if (EVMA::KeyPressed(SDL_SCANCODE_X))
 		{
 
@@ -388,7 +429,7 @@ void GameState::Render()
 		SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 0);
 		SDL_RenderDrawLine(Engine::Instance().GetRenderer(), origin.x, origin.y, m_mousePos.x, m_mousePos.y);
 	}
-
+	
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 255, 0, 255);
 	//SDL_RenderClear(Engine::Instance().GetRenderer());
 	//SDL_RenderPresent(m_pRenderer); // Flip buffers - send data to window.
@@ -445,6 +486,9 @@ EndState::EndState(){}
 void EndState::Enter()
 {
 	cout << "entering endstate" << endl;
+	TEMA::Load("mainmenu.png", "mainmenu");
+	m_objects.push_back(pair<string, GameObject*>("mainmenu",
+		new PlayButton({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
 }
 
 void EndState::Update()
@@ -455,6 +499,11 @@ void EndState::Update()
 		cout << "changing to gamestate" << endl;
 		STMA::ChangeState(new TitleState());
 	}
+	for (auto const& i : m_objects)
+	{
+		i.second->Update();
+		if (STMA::StateChanging()) return;
+	}
 
 }
 
@@ -462,6 +511,9 @@ void EndState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 69, 100, 200, 230);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	for (auto const& i : m_objects)
+		i.second->Render();
+	
 	State::Render();
 
 }
@@ -469,4 +521,10 @@ void EndState::Render()
 void EndState::Exit()
 {
 	cout << "exitinggamestate" << endl;
+	TEMA::Unload("mainmenu");
+	for (auto& i : m_objects)
+	{
+		delete i.second;
+		i.second = nullptr; // ;)
+	}
 }

@@ -2,7 +2,7 @@
 #include "StateManager.h"
 #include "States.h"
 #include "EventManager.h"
-
+#include <ctime>
 
 	int Engine::Init(const char* title, int xPos, int yPos, int width, int height, int flags)
 	{

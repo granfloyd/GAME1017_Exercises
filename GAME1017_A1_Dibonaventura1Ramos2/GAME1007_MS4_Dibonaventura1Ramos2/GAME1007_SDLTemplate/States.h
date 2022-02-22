@@ -9,7 +9,8 @@
 #include "SDL_image.h"
 #include "SDL_mixer.h"
 #include "Engine.h"
-
+#include "GameObject.h"
+#include "TiledLevel.h"
 using namespace std;
 //an abstract class is one that cannot be instantiated
 //why because theyd be a base class most likely
@@ -18,13 +19,16 @@ class State//this is the abstract base class for all state subclasses
 protected: //priv but inherited
 
 	State() = default;//or... State(){};
-	
+	vector<std::pair<std::string, GameObject*>> m_objects;
 public:
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
 	virtual void Render();
 	virtual void Exit() = 0;
 	virtual void Resume() {};
+	virtual ~State() {} // or = default;
+	GameObject* GetGo(const std::string& s);
+	auto GetIt(const std::string& s);
 };
 
 
@@ -34,7 +38,8 @@ class TitleState : public State
 private:
 	Mix_Music* m_pTitletheme;
 	SDL_Texture* m_pTitle;
-	SDL_Rect bgSrc, bgDst;
+	//SDL_Texture* play;
+	//SDL_Rect playSrc, playDst;
 public:
 	TitleState();
 	virtual void Enter();

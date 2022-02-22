@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GAME1007_SDLTemplate", "GAME1007_SDLTemplate\GAME1007_SDLTemplate.vcxproj", "{BDEBA2D2-3EA2-4761-A1EF-0E64DF4F2E3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48ACED39-2229-413C-B2EC-E26D5DF415FF}"
+	ProjectSection(SolutionItems) = preProject
+		GAME1007_SDLTemplate\play.png = GAME1007_SDLTemplate\play.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

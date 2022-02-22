@@ -56,10 +56,9 @@ void StateManager::Quit()
 		s_states.pop_back();//removed nullptr to deallocated current state 
 	}
 }
+std::vector<State*>& StateManager::GetStates() { return s_states; }
+std::vector<State*> StateManager::s_states;
 
-std::vector<State*>& StateManager::GetStates()
-{
-	return s_states;
-	
-}
-std::vector<State*>StateManager:: s_states;//this will now be allocated memory .it now exists
+bool StateManager::s_stateChange = false;
+const bool StateManager::StateChanging() { return s_stateChange; }
+

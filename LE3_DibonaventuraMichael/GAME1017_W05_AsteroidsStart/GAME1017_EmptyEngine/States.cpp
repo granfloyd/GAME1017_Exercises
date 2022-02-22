@@ -56,8 +56,8 @@ void TitleState::Enter()
 		new Image({ 0, 0, 1920, 1200 }, { 0, 0, 1024, 768 }, "bg")));
 	m_objects.push_back(pair<string, GameObject*>("title",
 		new Image({ 0, 0, 800, 156 }, { 112, 100, 800, 156 }, "title")));
-	m_objects.push_back(pair<string, GameObject*>("play",
-		new PlayButton({ 0, 0, 400, 100 }, { 412, 384, 200, 50 }, "play")));
+	//m_objects.push_back(pair<string, GameObject*>("play",
+		//new PlayButton({ 0, 0, 400, 100 }, { 412, 384, 200, 50 }, "play")));
 	SOMA::AllocateChannels(16);
 	SOMA::SetMusicVolume(32);
 	SOMA::PlayMusic("title", -1, 2000);

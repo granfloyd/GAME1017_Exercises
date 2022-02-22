@@ -486,9 +486,12 @@ EndState::EndState(){}
 void EndState::Enter()
 {
 	cout << "entering endstate" << endl;
+	endtheme = Mix_LoadMUS("aud/sexysax.mp3");//endtheme
+	Mix_PlayMusic(endtheme, -1);
+	Mix_VolumeMusic(15); //0-128
 	TEMA::Load("mainmenu.png", "mainmenu");
 	m_objects.push_back(pair<string, GameObject*>("mainmenu",
-		new PlayButton({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
+		new Mainmenu({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
 }
 
 void EndState::Update()
@@ -503,6 +506,7 @@ void EndState::Update()
 	{
 		i.second->Update();
 		if (STMA::StateChanging()) return;
+		
 	}
 
 }
@@ -522,6 +526,7 @@ void EndState::Exit()
 {
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
+	Mix_FreeMusic(endtheme);
 	for (auto& i : m_objects)
 	{
 		delete i.second;

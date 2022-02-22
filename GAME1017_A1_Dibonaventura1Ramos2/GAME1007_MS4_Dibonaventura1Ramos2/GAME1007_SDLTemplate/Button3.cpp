@@ -49,4 +49,11 @@ void PlayButton::Execute()
 	STMA::ChangeState(new GameState());
 }
 
+Mainmenu::Mainmenu(SDL_Rect s, SDL_FRect d, const char* k) :Button3(s, d, k) {}
+
+void Mainmenu::Execute()
+{
+	STMA::ChangeState(new TitleState());
+}
+
 

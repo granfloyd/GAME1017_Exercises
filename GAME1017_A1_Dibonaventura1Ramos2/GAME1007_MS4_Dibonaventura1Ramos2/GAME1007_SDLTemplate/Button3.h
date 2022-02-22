@@ -27,5 +27,13 @@ public:
 	PlayButton(SDL_Rect s, SDL_FRect d, const char* k);
 };
 
+class Mainmenu :public Button3
+{
+private:
+	void Execute();
+public:
+	   Mainmenu(SDL_Rect s, SDL_FRect d, const char* k);
+};
+
 #endif
 

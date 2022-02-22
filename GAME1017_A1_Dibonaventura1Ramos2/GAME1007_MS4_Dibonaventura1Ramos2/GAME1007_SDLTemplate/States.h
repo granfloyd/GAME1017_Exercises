@@ -121,6 +121,8 @@ public:
 };
 class EndState : public State
 {
+private:
+	Mix_Music* endtheme;
 
 public:
 	EndState();

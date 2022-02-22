@@ -23,6 +23,7 @@ class State//this is the abstract base class for all state subclasses
 {
 
 public:
+	SDL_Texture* Title;
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
 	virtual void Render();
@@ -43,7 +44,7 @@ class TitleState : public State
 {
 private:
 	Mix_Music* m_pTitletheme;
-	SDL_Texture* m_pTitle;
+
 	//SDL_Texture* play;
 	//SDL_Rect playSrc, playDst;
 public:
@@ -129,7 +130,7 @@ public:
 class EndState : public State
 {
 private:
-	Mix_Music* endtheme;
+	Mix_Chunk* hurt2;
 
 public:
 	EndState();

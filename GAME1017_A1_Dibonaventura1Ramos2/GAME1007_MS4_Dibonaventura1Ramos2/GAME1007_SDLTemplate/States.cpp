@@ -76,10 +76,10 @@ void TitleState::Enter()
 {	
 		cout << "enter titlestate" << endl;	
 		m_pTitletheme = Mix_LoadMUS("aud/Titletheme.mp3");//gametheme
-		m_pTitle = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
-		TEMA::Load("play.png", "play");
+		Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
+		TEMA::Load("play.jfif", "play");
 		m_objects.push_back(pair<string, GameObject*>("play",
-			new PlayButton({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "play")));
+			new PlayButton({ 0, 0, 200, 100 }, { 400, 555, 200, 100 }, "play")));
 		//play = IMG_LoadTexture(Engine::Instance().GetRenderer(), "play.png");
 		//playSrc = { 0,0,100,50 };
 		//playDst = { 333,440,250,100 };
@@ -105,7 +105,7 @@ void TitleState::Render()
 {
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),0,0,255,255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pTitle,NULL,NULL);	
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title,NULL,NULL);	
 	for (auto const& i : m_objects)
 		i.second->Render();
 	//SDL_RenderCopy(Engine::Instance().GetRenderer(), play, &playSrc, &playDst);
@@ -117,7 +117,7 @@ void TitleState::Exit()
 {
 	cout << "exiting titlestate" << endl;
 	Mix_FreeMusic(m_pTitletheme);
-	SDL_DestroyTexture(m_pTitle);
+	SDL_DestroyTexture(Title);
 	TEMA::Unload("play");
 	for (auto& i : m_objects)
 	{
@@ -510,12 +510,13 @@ EndState::EndState(){}
 void EndState::Enter()
 {
 	cout << "entering endstate" << endl;
-	endtheme = Mix_LoadMUS("aud/sexysax.mp3");//endtheme
-	Mix_PlayMusic(endtheme, -1);
-	Mix_VolumeMusic(15); //0-128
-	TEMA::Load("mainmenu.png", "mainmenu");
+	hurt2 = Mix_LoadWAV("aud/hurt2.mp3");//endsfx
+	Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
+	Mix_PlayChannel(-1,hurt2, 0);
+	Mix_Volume(-1, 28); //0-128
+	TEMA::Load("mainmenu.jfif", "mainmenu");
 	m_objects.push_back(pair<string, GameObject*>("mainmenu",
-		new Mainmenu({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
+		new Mainmenu({ 0, 0, 200, 100 }, { 400, 655, 200, 100 }, "mainmenu")));
 }
 
 void EndState::Update()
@@ -539,6 +540,7 @@ void EndState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 69, 100, 200, 230);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title, NULL, NULL);
 	for (auto const& i : m_objects)
 		i.second->Render();
 	
@@ -550,7 +552,8 @@ void EndState::Exit()
 {
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
-	Mix_FreeMusic(endtheme);
+	SDL_DestroyTexture(Title);
+	Mix_FreeChunk(hurt2);
 	for (auto& i : m_objects)
 	{
 		delete i.second;
@@ -564,11 +567,12 @@ void WinState::Enter()
 {
 	cout << "entering winstate" << endl;
 	wintheme = Mix_LoadMUS("aud/win.mp3");//endtheme
+	Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
 	Mix_PlayMusic(wintheme, -1);
-	Mix_VolumeMusic(8); //0-128
-	TEMA::Load("mainmenu.png", "mainmenu");
+	Mix_VolumeMusic(33); //0-128
+	TEMA::Load("mainmenu.jfif", "mainmenu");
 	m_objects.push_back(pair<string, GameObject*>("mainmenu",
-		new Mainmenu({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
+		new Mainmenu({ 0, 0, 200, 100 }, { 400, 655, 200, 100 }, "mainmenu")));
 }
 
 void WinState::Update()
@@ -585,6 +589,7 @@ void WinState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 123, 123, 123, 123);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title, NULL, NULL);
 	for (auto const& i : m_objects)
 		i.second->Render();
 
@@ -595,6 +600,7 @@ void WinState::Exit()
 {
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
+	SDL_DestroyTexture(Title);
 	Mix_FreeMusic(wintheme);
 	for (auto& i : m_objects)
 	{

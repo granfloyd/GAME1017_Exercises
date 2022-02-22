@@ -155,8 +155,10 @@
     <Image Include="Bg.png" />
     <Image Include="cosmicswag.png" />
     <Image Include="Enemy.png" />
+    <Image Include="mainmenu.jfif" />
     <Image Include="mainmenu.png" />
     <Image Include="Missile.png" />
+    <Image Include="play.jfif" />
     <Image Include="Ship.png" />
   </ItemGroup>
   <ItemGroup>

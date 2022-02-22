@@ -48,6 +48,12 @@
     <Image Include="mainmenu.png">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="play.jfif">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mainmenu.jfif">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

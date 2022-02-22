@@ -140,11 +140,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="States.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Bg.png" />
@@ -156,7 +154,12 @@
     <Media Include="audio\Free.mp3" />
     <Media Include="audio\Longcringe.mp3" />
     <Media Include="audio\MainTheme.mp3" />
-    <Media Include="audio\Short.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="States.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

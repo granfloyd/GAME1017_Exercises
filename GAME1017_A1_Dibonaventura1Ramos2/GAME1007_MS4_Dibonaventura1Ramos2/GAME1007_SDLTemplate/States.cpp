@@ -18,9 +18,9 @@ void Missile::Update(int moving)
 	m_dst.x += MOVESPEED * moving;
 }
 
-Enemy::Enemy(int x, int y) :m_enemySrc({ 0,0,280,243 })
+Enemy::Enemy(int x, int y) :m_enemySrc({ 0,0,200,121 })
 {
-	m_enemyDst = { x, rand() % 555 + 0,m_enemySrc.w,m_enemySrc.h };
+	m_enemyDst = { x, rand() % 300 + 100,110,77 };
 }
 
 void Enemy::Update()
@@ -173,7 +173,7 @@ void GameState::Enter()
 	cout << "entering gamestate\nPRESS P TO PAUSE" << endl;
 	m_pShipTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Ship.png");
 	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "bg1.png");
-	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Enemy.png");
+	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "1017enemy.png");
 
 	hithurt = Mix_LoadWAV("aud/hitHurt.wav");
 	m_pShoot = Mix_LoadWAV("aud/shoot.wav");
@@ -184,14 +184,14 @@ void GameState::Enter()
 	Mix_VolumeMusic(15); //0-128
 	Mix_Volume(-1, 28); //-1 means all channels
 
-	m_src = { 0, 0, 250, 270 }; // Clips out entire image.
-	m_dst = { WIDTH / 2, HEIGHT / 2, 154, 221 }; // On screen location/appearance.
+	m_src = { 0, 0, 130, 190 }; // Clips out entire image.
+	m_dst = { WIDTH / 2, HEIGHT / 2, 130, 190 }; // On screen location/appearance.
 
 	//m_missile.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
 	//m_playerpew.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
 	//m_enemy.reserve(4);
 
-	m_enemySrc = { 0,0,280,243 };
+	//m_enemySrc = { 0,0,199,144 };
 	m_pew = { 0,0,29,7 };//sdl rect	
 
 	g_bg1 = { 0,0,1024, 768 };
@@ -217,7 +217,7 @@ void GameState::Update()
 		
 		
 			// Fire dynamic Missile.
-			m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
+			m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 90));
 			m_playerpew.shrink_to_fit();
 			Mix_PlayChannel(-1, m_pShoot, 0);
 			cout << "pew " << endl;
@@ -253,17 +253,17 @@ void GameState::Update()
 			srand(time(NULL));
 			m_enemy.push_back(new Enemy(WIDTH + m_enemySrc.w, rand() % (HEIGHT - m_enemySrc.h)));
 			m_enemy.shrink_to_fit();
-			cout << "spawningcral" << endl;
+			cout << "spawning enemy" << endl;
 		}
 		//enemy fire
 		for (int i = 0; i < m_enemy.size(); i++)
 		{
-			if (m_enemy[i]->frames >= FPS * EFIRERATE)
+			if (m_enemy[i]->frames >= FPS * EFIRERATE / 2)
 			{
 				m_enemy[i]->resetFrames();
 				cout << "are you gonna finsih that croissant" << endl;
 				Mix_PlayChannel(-1, m_peShoot, 0);
-				m_missile.push_back(new Missile(m_enemy[i]->m_enemyDst.x + 22, m_enemy[i]->m_enemyDst.y + 100));
+				m_missile.push_back(new Missile(m_enemy[i]->m_enemyDst.x, m_enemy[i]->m_enemyDst.y + 45));
 				m_missile.shrink_to_fit();
 			}
 		}
@@ -432,7 +432,7 @@ void GameState::Render()
 	}
 
 	//enemy missile
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 225, 0, 0, 255);
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 111,111, 0, 255);
 	for (unsigned i = 0; i < m_missile.size(); i++)
 	{
 		SDL_RenderFillRect(Engine::Instance().GetRenderer(), &(m_missile[i]->m_dst));
@@ -511,7 +511,7 @@ void EndState::Enter()
 {
 	cout << "entering endstate" << endl;
 	hurt2 = Mix_LoadWAV("aud/hurt2.mp3");//endsfx
-	Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
+	TitleL = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswagL.png");
 	Mix_PlayChannel(-1,hurt2, 0);
 	Mix_Volume(-1, 28); //0-128
 	TEMA::Load("mainmenu.jfif", "mainmenu");
@@ -540,7 +540,7 @@ void EndState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 69, 100, 200, 230);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title, NULL, NULL);
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), TitleL, NULL, NULL);
 	for (auto const& i : m_objects)
 		i.second->Render();
 	
@@ -552,7 +552,7 @@ void EndState::Exit()
 {
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
-	SDL_DestroyTexture(Title);
+	SDL_DestroyTexture(TitleL);
 	Mix_FreeChunk(hurt2);
 	for (auto& i : m_objects)
 	{
@@ -567,7 +567,7 @@ void WinState::Enter()
 {
 	cout << "entering winstate" << endl;
 	wintheme = Mix_LoadMUS("aud/win.mp3");//endtheme
-	Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
+	TitleW = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswagW.png");
 	Mix_PlayMusic(wintheme, -1);
 	Mix_VolumeMusic(33); //0-128
 	TEMA::Load("mainmenu.jfif", "mainmenu");
@@ -589,7 +589,7 @@ void WinState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 123, 123, 123, 123);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title, NULL, NULL);
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), TitleW, NULL, NULL);
 	for (auto const& i : m_objects)
 		i.second->Render();
 
@@ -600,7 +600,7 @@ void WinState::Exit()
 {
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
-	SDL_DestroyTexture(Title);
+	SDL_DestroyTexture(TitleW);
 	Mix_FreeMusic(wintheme);
 	for (auto& i : m_objects)
 	{

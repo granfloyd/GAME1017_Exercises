@@ -13,7 +13,7 @@
 #include "TiledLevel.h"
 #define SPEED 5
 #define MOVESPEED 7
-#define ESPAWN 4
+#define ESPAWN 3
 #define EFIRERATE 2
 #define EMOVESPEED 4
 using namespace std;
@@ -24,6 +24,8 @@ class State//this is the abstract base class for all state subclasses
 
 public:
 	SDL_Texture* Title;
+	
+	
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
 	virtual void Render();
@@ -130,6 +132,7 @@ public:
 class EndState : public State
 {
 private:
+	SDL_Texture* TitleL;
 	Mix_Chunk* hurt2;
 
 public:
@@ -145,7 +148,7 @@ class WinState : public State
 {
 private:
 	Mix_Music* wintheme;
-
+	SDL_Texture* TitleW;
 public:
 	WinState();
 	virtual void Enter();

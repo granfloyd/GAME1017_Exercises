@@ -54,6 +54,15 @@
     <Image Include="mainmenu.jfif">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="1017enemy.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="cosmicswagL.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="cosmicswagW.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

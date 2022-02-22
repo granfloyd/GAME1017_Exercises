@@ -43,9 +43,6 @@ class Enemy
 	
 };
 
-
-
-
 class Engine
 {
  private:
@@ -70,14 +67,12 @@ class Engine
 	void Render();
 	void Sleep();
 	
- public:
-	
-
+ public:	
 	int Run();
 	// Add static method for singleton here
 	static Engine& Instance();
 	SDL_Renderer* GetRenderer() { return m_pRenderer; }
-	bool KeyDown(SDL_Scancode c);
+	bool& Running() { return m_running; }
 	
 };
 

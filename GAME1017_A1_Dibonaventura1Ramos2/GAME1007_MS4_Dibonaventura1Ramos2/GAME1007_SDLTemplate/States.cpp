@@ -1,6 +1,7 @@
 #include "States.h"
 #include "StateManager.h"
 #include "Engine.h"
+#include "EventManager.h"
 #include <iostream>
 
 
@@ -49,10 +50,10 @@ void TitleState::Enter()
 
 void TitleState::Update()
 {
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_N))
+	if (EVMA::KeyPressed(SDL_SCANCODE_N))
 	{
 		cout << "changing to gamestate" << endl;
-		STMA::ChangeState(new GameState() );
+		STMA::ChangeState(new GameState());
 	}
 }
 
@@ -84,7 +85,7 @@ void PauseState::Enter()
 
 void PauseState::Update()
 {
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+	if (EVMA::KeyPressed(SDL_SCANCODE_R))
 		STMA::PopState();
 }
 
@@ -145,36 +146,41 @@ void GameState::Enter()
 void GameState::Update()
 {
 	
-		if (Engine::Instance().KeyDown(SDL_SCANCODE_P))
+		if (EVMA::KeyPressed(SDL_SCANCODE_P))
 		{
 			cout << "Changing to PauseState" << endl;
 			//pause the music track
 			STMA::PushState(new PauseState());
 			Mix_PauseMusic();
 		}
-
-		if (Engine::Instance().KeyDown(SDL_SCANCODE_SPACE)) // spacebar
-		{
-			if (m_isAlive == true)
+	
+			if (EVMA::KeyPressed(SDL_SCANCODE_SPACE))
 			{
-				// Fire dynamic Missile.
-				m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
-				m_playerpew.shrink_to_fit();
-				Mix_PlayChannel(-1, m_pShoot, 0);
-				cout << "pew " << endl;
-			}
+				if (m_isAlive == true)
+				{
+					// Fire dynamic Missile.
+					m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
+					m_playerpew.shrink_to_fit();
+					Mix_PlayChannel(-1, m_pShoot, 0);
+					cout << "pew " << endl;
+				}
 
-		}
+			}
+			
+		
+		
+		
+		
 		if (m_isAlive == true)
 		{
-			if (Engine::Instance().KeyDown(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))
+			if (EVMA::KeyHeld(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))
 				m_dst.y += SPEED;
-			if (Engine::Instance().KeyDown(SDL_SCANCODE_W) && m_dst.y > 0)
+			if (EVMA::KeyHeld(SDL_SCANCODE_W) && m_dst.y > 0)
 				m_dst.y -= SPEED;
 
-			if (Engine::Instance().KeyDown(SDL_SCANCODE_D) && m_dst.x < (WIDTH - m_dst.w))
+			if (EVMA::KeyHeld(SDL_SCANCODE_D) && m_dst.x < (WIDTH - m_dst.w))
 				m_dst.x += SPEED;
-			if (Engine::Instance().KeyDown(SDL_SCANCODE_A) && m_dst.x > 0)
+			if (EVMA::KeyHeld(SDL_SCANCODE_A) && m_dst.x > 0)
 				m_dst.x -= SPEED;
 		}
 		//scroll background
@@ -324,7 +330,7 @@ void GameState::Update()
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 			}
 		}
-		if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
+		if (EVMA::KeyPressed(SDL_SCANCODE_X))
 		{
 
 			cout << "changing to gamestate" << endl;
@@ -435,7 +441,7 @@ void EndState::Enter()
 
 void EndState::Update()
 {
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+	if (EVMA::KeyPressed(SDL_SCANCODE_R))
 	{
 
 		cout << "changing to gamestate" << endl;

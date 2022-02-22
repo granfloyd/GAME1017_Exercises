@@ -104,6 +104,7 @@ private:
 	
 	bool g_paused; // If music is paused or not
 public:
+	vector<Missile*>& GetMissile() { return m_playerpew; }
 	GameState();
 	virtual void Enter();
 	virtual void Update();

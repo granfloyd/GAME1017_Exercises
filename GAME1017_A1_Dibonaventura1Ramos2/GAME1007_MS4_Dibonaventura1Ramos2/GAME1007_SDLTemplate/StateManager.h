@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _STATEMANAGER_H_
 #define _STATEMANAGER_H_
-
+#include "EventManager.h"
 #include "States.h"
 #include <vector>
 

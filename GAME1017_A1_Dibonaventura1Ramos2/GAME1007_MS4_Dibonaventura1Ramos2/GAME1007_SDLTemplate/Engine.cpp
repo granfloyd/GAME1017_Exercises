@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "StateManager.h"
 #include "States.h"
-
+#include "EventManager.h"
 
 
 	int Engine::Init(const char* title, int xPos, int yPos, int width, int height, int flags)
@@ -18,21 +18,16 @@
 					m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
 					if (m_pRenderer != nullptr)
 					{
+						EVMA::Init();
 						if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0)
 						{
-							
-							
-
-							
+					
 						}
 						else return false; // Image init failed.
 						if (Mix_Init(MIX_INIT_MP3) != 0)
 						{
 							Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096);
 							Mix_AllocateChannels(16);
-							
-							//load sound
-							//m_pFree = Mix_LoadWAV("aud/Free.mp3");
 							
 						}
 						else return false; // Mixer init failed
@@ -61,34 +56,19 @@
 
 void Engine::HandleEvents()
 {
-	
-	SDL_Event event;
-	while (SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_QUIT: // Pressing 'X' button of window.
-			m_running = false;
-			break;
-		case SDL_KEYDOWN: // Essential parses every frame. Just like keystates.
-			
-			break;
-		
-		}
-	}
-	STMA::Update();
+	EVMA::HandleEvents();
 }
 
 
-bool Engine :: KeyDown(SDL_Scancode c)
-{
-	if (m_keystates != nullptr)
-	{
-		if (m_keystates[c] == 1) // Key we're testing for is down.
-			return true;
-	}
-	return false;
-}
+//bool Engine :: KeyDown(SDL_Scancode c)
+//{
+//	if (m_keystates != nullptr)
+//	{
+//		if (m_keystates[c] == 1) // Key we're testing for is down.
+//			return true;
+//	}
+//	return false;
+//}
 
 void Engine::Update()
 {
@@ -152,6 +132,9 @@ void Engine::Clean()
 	IMG_Quit();
 	SDL_Quit();
 }
+//bool& Engine::Running() { return m_running; } // Getter.
+//void Engine::SetRunning(const bool b) { m_running = b; }
+
 
 
 

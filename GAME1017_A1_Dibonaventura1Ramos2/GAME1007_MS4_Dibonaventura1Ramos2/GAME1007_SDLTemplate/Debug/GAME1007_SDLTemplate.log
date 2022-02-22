@@ -1,0 +1,4 @@
+﻿  Engine.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1007 fall2021\GAME1007_MS4_Dibonaventura1Ramos2-20211216T153645Z-001\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\Engine.cpp(232,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1007 fall2021\GAME1007_MS4_Dibonaventura1Ramos2-20211216T153645Z-001\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\Engine.cpp(238,20): warning C4018: '<': signed/unsigned mismatch
+  GAME1007_SDLTemplate.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1007 fall2021\GAME1007_MS4_Dibonaventura1Ramos2-20211216T153645Z-001\GAME1007_MS4_Dibonaventura1Ramos2\Debug\GAME1007_SDLTemplate.exe

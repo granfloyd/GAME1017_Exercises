@@ -1,7 +1,3 @@
-﻿  Engine.cpp
-  Main.cpp
-  StateManager.cpp
-  States.cpp
+﻿  States.cpp
 C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE1_Dibonaventura1Ramos2\GAME1017_EmptyEngine\States.cpp(175,27): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
-  Generating Code...
   GAME1017_EmptyEngine.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE1_Dibonaventura1Ramos2\Debug\GAME1017_EmptyEngine.exe

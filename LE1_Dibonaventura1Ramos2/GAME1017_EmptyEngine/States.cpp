@@ -162,7 +162,7 @@ void GameState::Render()
 void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
-	Mix_FreeMusic(m_Gasoline1);
+	//Mix_FreeMusic(m_Gasoline1);
 	Mix_FreeMusic(m_DMCA);
 	Mix_FreeChunk(m_Superpartypc);
 	Mix_FreeChunk(m_Free);

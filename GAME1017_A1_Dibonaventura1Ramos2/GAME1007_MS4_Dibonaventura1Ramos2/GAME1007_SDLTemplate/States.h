@@ -110,7 +110,7 @@ private:
 	
 	bool g_paused; // If music is paused or not
 public:
-	vector<Missile*>& GetMissile() { return m_playerpew; }
+	//vector<Missile*>& GetMissile() { return m_playerpew; }
 	GameState();
 	virtual void Enter();
 	virtual void Update();
@@ -131,6 +131,19 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+
+};
+class WinState : public State
+{
+private:
+	Mix_Music* wintheme;
+
+public:
+	WinState();
+	virtual void Enter();
+	virtual void Update();
+	virtual void Render();
+	virtual void Exit();
 };
 //add endstatehere
 //myarray[0].Render();

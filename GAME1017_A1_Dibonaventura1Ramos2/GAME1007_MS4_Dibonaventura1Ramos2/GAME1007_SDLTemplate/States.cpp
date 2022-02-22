@@ -276,7 +276,7 @@ void GameState::Update()
 				m_enemy[i] = nullptr;
 				m_enemy.erase(m_enemy.begin() + i);
 				m_enemy.shrink_to_fit();
-
+				STMA::ChangeState(new WinState());
 
 				break;
 			}
@@ -372,10 +372,10 @@ void GameState::Update()
 		{
 			if (SDL_HasIntersection(&m_enemy[i]->m_enemyDst, &m_dst))
 			{
-
 				m_isAlive = false;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 				STMA::ChangeState(new EndState());
+				break;
 			}
 		}
 
@@ -527,6 +527,51 @@ void EndState::Exit()
 	cout << "exitinggamestate" << endl;
 	TEMA::Unload("mainmenu");
 	Mix_FreeMusic(endtheme);
+	for (auto& i : m_objects)
+	{
+		delete i.second;
+		i.second = nullptr; // ;)
+	}
+}
+
+WinState::WinState(){}
+
+void WinState::Enter()
+{
+	cout << "entering winstate" << endl;
+	wintheme = Mix_LoadMUS("aud/win.mp3");//endtheme
+	Mix_PlayMusic(wintheme, -1);
+	Mix_VolumeMusic(8); //0-128
+	TEMA::Load("mainmenu.png", "mainmenu");
+	m_objects.push_back(pair<string, GameObject*>("mainmenu",
+		new Mainmenu({ 0, 0, 300, 200 }, { 135, 384, 300, 200 }, "mainmenu")));
+}
+
+void WinState::Update()
+{
+	for (auto const& i : m_objects)
+	{
+		i.second->Update();
+		if (STMA::StateChanging()) return;
+
+	}
+}
+
+void WinState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 123, 123, 123, 123);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+	for (auto const& i : m_objects)
+		i.second->Render();
+
+	State::Render();
+}
+
+void WinState::Exit()
+{
+	cout << "exitinggamestate" << endl;
+	TEMA::Unload("mainmenu");
+	Mix_FreeMusic(wintheme);
 	for (auto& i : m_objects)
 	{
 		delete i.second;

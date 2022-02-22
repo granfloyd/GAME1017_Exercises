@@ -97,7 +97,7 @@ int Engine::Run()
 		return 1;
 	}
 	// Start and run the "engine"
-	if (Init("THANKS SHARI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, NULL) == false)
+	if (Init("game1017 assignment1, thanks Shari", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, NULL) == false)
 	{
 		return 2;
 	}

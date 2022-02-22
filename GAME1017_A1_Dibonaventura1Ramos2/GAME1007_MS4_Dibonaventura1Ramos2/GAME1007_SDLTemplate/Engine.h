@@ -77,10 +77,11 @@ class Engine
 	Uint16 m_enemyTimer;
 	
 	//Audio
-	Mix_Chunk* m_pFree; // myMap["Free.mp3"]
-	Mix_Chunk* m_pShort; // myMap["Short.mp3"]
+	Mix_Chunk* m_pShoot; // myMap["Free.mp3"]
+	Mix_Chunk* m_peShoot; // myMap["Short.mp3"]
 	Mix_Chunk* m_pLaser;
-	Mix_Music* m_pMusic;
+	Mix_Music* m_pMaintheme;
+	Mix_Music* m_pTitletheme;
 	bool g_paused; // If music is paused or not
 	
 	

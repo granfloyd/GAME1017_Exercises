@@ -45,9 +45,7 @@ void Enemy::resetFrames()
 						{
 							m_pShipTexture = IMG_LoadTexture(m_pRenderer, "Ship.png");
 							m_pBGTexture = IMG_LoadTexture(m_pRenderer, "bg1.png");
-							//m_pMissileTexture = IMG_LoadTexture(m_pRenderer, "Missile.png");
 							m_pEnemyTexture = IMG_LoadTexture(m_pRenderer, "Enemy.png");
-														// Add check of texture pointer later...
 						}
 						else return false; // Image init failed.
 						if (Mix_Init(MIX_INIT_MP3) != 0)
@@ -55,10 +53,10 @@ void Enemy::resetFrames()
 							Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 4096);
 							Mix_AllocateChannels(16);
 							//load sound
-							m_pFree = Mix_LoadWAV("aud/Free.mp3");
-							m_pShort = Mix_LoadWAV("aud/Blaster.mp3");
-							m_pLaser = Mix_LoadWAV("aud/carlpew.mp3");
-							m_pMusic = Mix_LoadMUS("aud/MainTheme.mp3");
+							//m_pFree = Mix_LoadWAV("aud/Free.mp3");
+							m_pShoot = Mix_LoadWAV("aud/shoot.mp3");
+							m_peShoot = Mix_LoadWAV("aud/carlpew.mp3");
+							//m_pMusic = Mix_LoadMUS("aud/MainTheme.mp3");
 						}
 						else return false; // Mixer init failed
 					}
@@ -85,7 +83,7 @@ void Enemy::resetFrames()
 			g_bg1 = { 0,0,1024, 768 };
 			g_bg2 = { 1024,0,1024, 768 };
 
-			Mix_PlayMusic(m_pMusic, -1);
+			//Mix_PlayMusic(m_pMusic, -1);
 			Mix_VolumeMusic(60); //0-128
 			Mix_Volume(-1, 32); //-1 means all channels
 			
@@ -97,12 +95,6 @@ void Enemy::resetFrames()
 		}
 		
 	}
-	//Missile::Missile(int x, int y) :m_src({ 0,0,10,10})
-		// Body considered assignment not initialization.
-	 
-		//m_dst = { x,y,m_src.w * 2,m_src.h * 2 };
-	
-
 	void Engine::Clean()
 	{
 		cout << "cleaning up..." << endl;
@@ -133,12 +125,11 @@ void Enemy::resetFrames()
 		SDL_DestroyTexture(m_pBGTexture);
 		SDL_DestroyTexture(m_pEnemyTexture);
 		Mix_FreeChunk(m_pLaser);
-		Mix_FreeChunk(m_pShort);
-		Mix_FreeChunk(m_pFree);
-		Mix_FreeMusic(m_pMusic);
+		Mix_FreeChunk(m_pShoot);
+		Mix_FreeChunk(m_peShoot);
+		//Mix_FreeMusic(m_pMusic);
 		Mix_CloseAudio();
 		Mix_Quit();
-
 		IMG_Quit();
 		SDL_Quit();
 	}
@@ -152,7 +143,7 @@ void Enemy::resetFrames()
 
 void Engine::HandleEvents()
 {
-	//cout << "Getting input..." << endl;
+	
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -162,34 +153,6 @@ void Engine::HandleEvents()
 			m_running = false;
 			break;
 		case SDL_KEYDOWN: // Essential parses every frame. Just like keystates.
-		//	if (event.key.keysym.sym == SDLK_SPAC) // Pressing spacebar.
-		//	{
-
-		//		
-		//		if (m_isAlive == true)
-		//		{
-		//			m_fire = true;
-		//			if (!Mix_Playing(8))
-		//			{
-		//				Mix_SetPanning(8, 255, 128);//all left ,half right
-		//				//Mix_PlayChannel(8, m_pShort, -1);
-		//			    cout << "Firin' mah lazor!" << endl;
-		//			}
-		//			cout << "Firin' mah !" << endl;
-		//		}
-		//			
-		//		
-
-		//	}
-		//	break;
-		//case SDL_KEYUP: // One-shot
-		//	if (event.key.keysym.sym == ' ') // Releasing spacebar.
-		//	{
-		//		m_fire = false;
-		//		Mix_HaltChannel(8);
-		//		cout << "Done shootin" << endl;
-		//		
-		//	}
 			if (event.key.keysym.sym == 32) // Enter.
 			{
 				if (m_isAlive == true)
@@ -197,43 +160,13 @@ void Engine::HandleEvents()
 					// Fire dynamic Missile.
 					m_playerpew.push_back(new Missile(m_dst.x +130, m_dst.y +105 ));
 					m_playerpew.shrink_to_fit();
-					Mix_PlayChannel(-1, m_pShort, 0);
+					Mix_PlayChannel(-1, m_pShoot, 0);
 					cout << "pew " << endl;
 				}
 				
-				
 			}
 			break;
-			
-		//	break;
-		//case SDL_MOUSEMOTION:
-		//	SDL_GetMouseState(&m_mousePos.x, &m_mousePos.y);
-		//	// cout << '(' << g_mousePos.x << ',' << g_mousePos.y << ')' << endl;
-		//	break;
-		//case SDL_MOUSEBUTTONDOWN:
-		//	if (event.button.button == SDL_BUTTON_LEFT)
-		//	{
-		//		if (m_isAlive == true)
-		//		{ 
-		//			m_turret = true;
-		//			if (!Mix_Playing(9))
-		//			{
-		//				Mix_SetPanning(9, 128, 255);//all right ,half left
-		//				Mix_PlayChannel(9, m_pShort, -1);
-		//			}
-		//		}
-		//		
-		//	}
-		//	break;
-
-		//case SDL_MOUSEBUTTONUP:
-		//	if (event.button.button == SDL_BUTTON_LEFT)
-		//	{
-		//		m_turret = false;
-		//		Mix_HaltChannel(9);
-		//	}
-
-		//	break;
+		
 		}
 	}
 }
@@ -253,7 +186,6 @@ void Engine::Update()
 {
 	if (m_isAlive == true)
 	{
-		//cout << "Updating game..." << endl;
 		if (KeyDown(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))
 			m_dst.y += SPEED;
 		if (KeyDown(SDL_SCANCODE_W) && m_dst.y > 0)
@@ -264,13 +196,7 @@ void Engine::Update()
 		if (KeyDown(SDL_SCANCODE_A) && m_dst.x > 0)
 			m_dst.x -= SPEED;
 	}
-	
-	/*if (KeyDown(SDL_SCANCODE_A))
-		g_dst.x -= SPEED;
-	if (KeyDown(SDL_SCANCODE_D))
-		g_dst.x += SPEED;*/
-
-		//scroll background
+	//scroll background
 	g_bg1.x -= SPEED;
 	g_bg2.x -= SPEED;
 	//check
@@ -297,7 +223,7 @@ void Engine::Update()
 		{			
 			m_enemy[i]->resetFrames();
 			cout << "are you gonna finsih that croissant" << endl;
-			Mix_PlayChannel(-1, m_pLaser, 0);
+			Mix_PlayChannel(-1, m_peShoot, 0);
 			m_missile.push_back(new Missile(m_enemy[i]->m_enemyDst.x +35, m_enemy[i]->m_enemyDst.y +100));
 			m_missile.shrink_to_fit();
 		}
@@ -372,8 +298,8 @@ void Engine::Update()
 		{
 			if (SDL_HasIntersection(&m_playerpew[i]->m_dst, &m_enemy[j]->m_enemyDst)) //AABB Check
 			{
-				cout << "noice" << endl;
-				Mix_PlayChannel(-1, m_pFree, 0);
+				cout << "ns" << endl;
+				//Mix_PlayChannel(-1, m_pFree, 0);//deadsoundfx needed
 				//Deallcoate bullet that hits enemy
 				delete m_playerpew[i]; // Deallocates bullet through pointer.
 				m_playerpew[i] = nullptr; // Ensures no dangling pointer.
@@ -433,27 +359,20 @@ void Engine::Render()
 	// moving bg
 	SDL_RenderCopy(m_pRenderer, m_pBGTexture, NULL, &g_bg1);
 	SDL_RenderCopy(m_pRenderer, m_pBGTexture, NULL, &g_bg2);
-	
-	//spacebar thing
-	if (m_fire == true)
-	{
-		SDL_Point origin = { m_dst.x + m_dst.w / 2, m_dst.y + m_dst.h / 2 };
-		SDL_Point end = { m_dst.x + m_dst.w / 2, m_dst.y - 300 };
-		SDL_SetRenderDrawColor(m_pRenderer, 222, 255, 255, 255);//colour
-		SDL_RenderDrawLine(m_pRenderer, origin.x, origin.y, end.x, end.y);//where thing will spawn
-	}
 
 	//Render enemies.
     for (unsigned i = 0; i < m_enemy.size(); i++)
     {
 			SDL_RenderCopyEx(m_pRenderer, m_pEnemyTexture, &m_enemy[i]->m_enemySrc, &m_enemy[i]->m_enemyDst, 00.0, NULL, SDL_FLIP_NONE);
 	}
+
 	// Render missiles. 
 	SDL_SetRenderDrawColor(m_pRenderer, 0, 255, 255, 255);
 	for (unsigned i = 0; i < m_playerpew.size(); i++)
 	{
 		SDL_RenderFillRect(m_pRenderer, &(m_playerpew[i]->m_dst));
 	}
+
 	//enemy missile
 	SDL_SetRenderDrawColor(m_pRenderer, 225, 0, 0, 255);
 	for (unsigned i = 0; i < m_missile.size(); i++)

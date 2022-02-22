@@ -1,9 +1,10 @@
 /*******************************************************************************
-* File Name   :		 GAME1007_M4_Dibonaventura1Ramos2.
-* Description :	MainTheme source : https://www.youtube.com/watch?v=Z06OcgqQY-U
+* File Name   :		 GAME1017_M4_Dibonaventura1Ramos2.
+* Description :	"you can thank shari for handing in a working ms4"
+* Note        :"dont forgor to delete da vs folder"
 * Author      :	Michael Dibonaventura1 Shari Ramos2
 * Created     :	dec 15 2021
-* Modified    :	
+* Modified    :	feb 21 2022
 *******************************************************************************/
 
 // SDL includes pasted for convenience. Move/copy to relevant files.

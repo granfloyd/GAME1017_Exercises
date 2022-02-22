@@ -11,24 +11,30 @@
 #include "Engine.h"
 #include "GameObject.h"
 #include "TiledLevel.h"
+#define SPEED 5
+#define MOVESPEED 7
+#define ESPAWN 4
+#define EFIRERATE 2
+#define EMOVESPEED 4
 using namespace std;
 //an abstract class is one that cannot be instantiated
 //why because theyd be a base class most likely
 class State//this is the abstract base class for all state subclasses
 {
-protected: //priv but inherited
 
-	State() = default;//or... State(){};
-	vector<std::pair<std::string, GameObject*>> m_objects;
 public:
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
 	virtual void Render();
 	virtual void Exit() = 0;
-	virtual void Resume() {};
+	virtual void Resume();
 	virtual ~State() {} // or = default;
 	GameObject* GetGo(const std::string& s);
 	auto GetIt(const std::string& s);
+protected: //priv but inherited
+
+	State() {}//or... State(){};
+	vector<std::pair<std::string, GameObject*>> m_objects;
 };
 
 
@@ -89,6 +95,7 @@ private:
 
 
    //Audio
+	Mix_Chunk* hithurt;
 	Mix_Chunk* m_pShoot; // myMap["Free.mp3"]
 	Mix_Chunk* m_peShoot; // myMap["Short.mp3"]
 	Mix_Chunk* m_pLaser;

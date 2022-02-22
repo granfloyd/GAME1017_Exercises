@@ -12,11 +12,7 @@
 #define FPS 60
 #define WIDTH 1024
 #define HEIGHT 768
-#define SPEED 5
-#define MOVESPEED 7
-#define ESPAWN 4
-#define EFIRERATE 2
-#define EMOVESPEED 4
+
 
 
 using namespace std;

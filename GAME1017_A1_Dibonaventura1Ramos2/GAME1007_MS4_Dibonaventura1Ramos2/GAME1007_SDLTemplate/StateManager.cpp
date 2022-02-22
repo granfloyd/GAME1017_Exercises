@@ -2,6 +2,7 @@
 
 void StateManager::Update()
 {
+	s_stateChange = false;
 	if (!s_states.empty())
 		s_states.back()->Update();//s_states.back represents the current state running
 }
@@ -35,6 +36,7 @@ void StateManager::PopState()//going from pause back to game
 
 void StateManager::ChangeState(State* pState)
 {
+	s_stateChange = true;
 	if (!s_states.empty())
 	{
 		s_states.back()->Exit();//cleans up curret state 
@@ -42,8 +44,9 @@ void StateManager::ChangeState(State* pState)
 		s_states.back() = nullptr;//wranle our dangle..... 
 		s_states.pop_back();//removed nullptr to deallocated current state 
 	}
+	pState->Enter();
 	s_states.push_back(pState);
-	s_states.back()->Enter();
+	
 }
 
 void StateManager::Quit()

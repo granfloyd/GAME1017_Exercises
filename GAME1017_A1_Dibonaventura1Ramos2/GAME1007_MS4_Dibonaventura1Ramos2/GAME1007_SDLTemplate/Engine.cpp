@@ -79,7 +79,7 @@ void Engine::Update()
 void Engine::Render()
 {
 	STMA::Render();
-	//StateMAnager.Render()->CurrentState.Render()
+	//StateManager.Render()->CurrentState.Render()
 }
 
 void Engine::Sleep()

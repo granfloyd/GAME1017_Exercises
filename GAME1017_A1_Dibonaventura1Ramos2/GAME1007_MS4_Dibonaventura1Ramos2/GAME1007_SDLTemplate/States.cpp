@@ -4,7 +4,7 @@
 #include "EventManager.h"
 #include "Button3.h"
 #include "TextureManager.h"
-
+#include <ctime>
 #include <iostream>
 using namespace std;
 
@@ -18,7 +18,7 @@ void Missile::Update(int moving)
 	m_dst.x += MOVESPEED * moving;
 }
 
-Enemy::Enemy(int x, int y) :m_enemySrc({ 0,0,230,200 })
+Enemy::Enemy(int x, int y) :m_enemySrc({ 0,0,280,243 })
 {
 	m_enemyDst = { x, rand() % 555 + 0,m_enemySrc.w,m_enemySrc.h };
 }
@@ -34,6 +34,12 @@ void Enemy::resetFrames()
 	frames = 0;
 }
 
+void State::Render()
+{
+	SDL_RenderPresent(Engine::Instance().GetRenderer());
+}
+
+void State::Resume(){}
 
 GameObject* State::GetGo(const std::string& s)
 { // Using 'std' just to show origin.
@@ -59,10 +65,9 @@ auto State::GetIt(const std::string& s)
 	return it;
 }
 
-void State::Render()
-{
-	SDL_RenderPresent(Engine::Instance().GetRenderer());
-}
+
+
+
 
 TitleState::TitleState(){}
 
@@ -84,11 +89,11 @@ void TitleState::Enter()
 
 void TitleState::Update()
 {
-	if (EVMA::KeyPressed(SDL_SCANCODE_N))
+	/*if (EVMA::KeyPressed(SDL_SCANCODE_N))
 	{
 		cout << "changing to gamestate" << endl;
 		STMA::ChangeState(new GameState());
-	}
+	}*/
 	for (auto const& i : m_objects)
 	{
 		i.second->Update();
@@ -104,7 +109,7 @@ void TitleState::Render()
 	for (auto const& i : m_objects)
 		i.second->Render();
 	//SDL_RenderCopy(Engine::Instance().GetRenderer(), play, &playSrc, &playDst);
-	if (dynamic_cast<TitleState*>(STMA::GetStates().back()))//if current state is gamestate
+	//if (dynamic_cast<TitleState*>(STMA::GetStates().back()))//if current state is gamestate
 	State::Render();
 }
 
@@ -165,11 +170,12 @@ GameState::GameState(){}
 
 void GameState::Enter()
 {
-	cout << "entering gamestate" << endl;
+	cout << "entering gamestate\nPRESS P TO PAUSE" << endl;
 	m_pShipTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Ship.png");
 	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "bg1.png");
 	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Enemy.png");
 
+	hithurt = Mix_LoadWAV("aud/hitHurt.wav");
 	m_pShoot = Mix_LoadWAV("aud/shoot.wav");
 	m_peShoot = Mix_LoadWAV("aud/eshoot.wav");
 	//m_pMaintheme = Mix_LoadMUS("aud/MainThemeGAME1017.mp3");//title theme
@@ -181,9 +187,9 @@ void GameState::Enter()
 	m_src = { 0, 0, 250, 270 }; // Clips out entire image.
 	m_dst = { WIDTH / 2, HEIGHT / 2, 154, 221 }; // On screen location/appearance.
 
-	m_missile.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
-	m_playerpew.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
-	m_enemy.reserve(4);
+	//m_missile.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
+	//m_playerpew.reserve(4); // Pre-allocates 4 elements of the vector array. Capacity = 4.
+	//m_enemy.reserve(4);
 
 	m_enemySrc = { 0,0,280,243 };
 	m_pew = { 0,0,29,7 };//sdl rect	
@@ -200,35 +206,35 @@ void GameState::Update()
 	
 	if (EVMA::KeyPressed(SDL_SCANCODE_P))
 	{
-		cout << "Changing to PauseState" << endl;
+		cout << "Changing to PauseState\nPRESS R TO RESUME" << endl;
 		//pause the music track
 		STMA::PushState(new PauseState());
+
 		Mix_PauseMusic();
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE))
 	{
-		if (m_isAlive == true)
-		{
+		
+		
 			// Fire dynamic Missile.
 			m_playerpew.push_back(new Missile(m_dst.x + 130, m_dst.y + 105));
 			m_playerpew.shrink_to_fit();
 			Mix_PlayChannel(-1, m_pShoot, 0);
 			cout << "pew " << endl;
-		}
+		
 
 	}
-		if (m_isAlive == true)
-		{
-			if (EVMA::KeyHeld(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))				
-				m_dst.y += SPEED;
-			if (EVMA::KeyHeld(SDL_SCANCODE_W) && m_dst.y > 0)
-				m_dst.y -= SPEED;
 
-			if (EVMA::KeyHeld(SDL_SCANCODE_D) && m_dst.x < (WIDTH - m_dst.w))
-				m_dst.x += SPEED;
-			if (EVMA::KeyHeld(SDL_SCANCODE_A) && m_dst.x > 0)
-				m_dst.x -= SPEED;
-		}
+	if (EVMA::KeyHeld(SDL_SCANCODE_S) && m_dst.y < (HEIGHT - m_dst.h))
+		m_dst.y += SPEED;
+	if (EVMA::KeyHeld(SDL_SCANCODE_W) && m_dst.y > 0)
+		m_dst.y -= SPEED;
+
+	if (EVMA::KeyHeld(SDL_SCANCODE_D) && m_dst.x < (WIDTH - m_dst.w))
+		m_dst.x += SPEED;
+	if (EVMA::KeyHeld(SDL_SCANCODE_A) && m_dst.x > 0)
+		m_dst.x -= SPEED;
+		
 		//scroll background
 		g_bg1.x -= SPEED;
 		g_bg2.x -= SPEED;
@@ -277,9 +283,10 @@ void GameState::Update()
 				m_enemy.erase(m_enemy.begin() + i);
 				m_enemy.shrink_to_fit();
 				STMA::ChangeState(new WinState());
-
-				break;
+				return;
+				
 			}
+
 		}
 
 		// Move enemy missile.
@@ -296,13 +303,13 @@ void GameState::Update()
 				m_missile[i] = nullptr; // Ensures no dangling pointer.
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
-				break;
+				return;
 			}
 		}
 
 		// Move player missile.
-		if (m_isAlive == true)
-		{
+		
+		
 			for (unsigned i = 0; i < m_playerpew.size(); i++)
 			{
 				m_playerpew[i]->Update(4);
@@ -316,11 +323,11 @@ void GameState::Update()
 					m_playerpew[i] = nullptr; // Ensures no dangling pointer.
 					m_playerpew.erase(m_playerpew.begin() + i); // Erase element and resize array.
 					m_playerpew.shrink_to_fit();
-					break;
+					return;
 				}
 			}
 
-		}
+		
 
 
 		//Collision test for all playerpew to enemy
@@ -332,7 +339,7 @@ void GameState::Update()
 				if (SDL_HasIntersection(&m_playerpew[i]->m_dst, &m_enemy[j]->m_enemyDst)) //AABB Check
 				{
 					cout << "ns" << endl;
-					//Mix_PlayChannel(-1, m_pFree, 0);//deadsoundfx needed
+					Mix_PlayChannel(-1, hithurt, 0);
 					//Deallcoate bullet that hits enemy
 					delete m_playerpew[i]; // Deallocates bullet through pointer.
 					m_playerpew[i] = nullptr; // Ensures no dangling pointer.
@@ -343,7 +350,7 @@ void GameState::Update()
 					m_enemy[j] = nullptr;
 					m_enemy.erase(m_enemy.begin() + j);
 					m_enemy.shrink_to_fit();
-					break;
+					return;
 				}
 			}
 		}
@@ -353,9 +360,8 @@ void GameState::Update()
 		{
 			if (SDL_HasIntersection(&m_missile[i]->m_dst, &m_dst))
 			{
-
+				cout << "died to enemy bullet" << endl;
 				//destoyer 
-				m_isAlive = false;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 				//deallocate enemy bullet
 				delete m_missile[i]; // Deallocates missile through pointer.
@@ -363,26 +369,38 @@ void GameState::Update()
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
 				STMA::ChangeState(new EndState());
-				break;
+				return;
+				
+			}
+			for (auto const& i : m_objects)
+			{
+				i.second->Update();
+				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
 			}
 		}
 
 		//Collision for player vs enemies
+		
 		for (unsigned i = 0; i < m_enemy.size(); i++)
 		{
 			if (SDL_HasIntersection(&m_enemy[i]->m_enemyDst, &m_dst))
 			{
-				m_isAlive = false;
+				cout << "carl " << endl;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 				STMA::ChangeState(new EndState());
-				break;
+				return;
+			}
+			for (auto const& i : m_objects)
+			{
+				i.second->Update();
+				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
 			}
 		}
 
 		if (EVMA::KeyPressed(SDL_SCANCODE_X))
 		{
 
-			cout << "changing to gamestate" << endl;
+			cout << "changing to endstate" << endl;
 			STMA::ChangeState(new EndState());
 		}
 
@@ -423,16 +441,16 @@ void GameState::Render()
 	// Render sprite.		
 	// For the ship.
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pShipTexture, NULL, &m_dst, 90.00, NULL, SDL_FLIP_NONE);
-	if (m_turret == true)
-	{
-		SDL_Point origin = { m_dst.x + m_dst.w / 2, m_dst.y + m_dst.h / 2 };
-		SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 0);
-		SDL_RenderDrawLine(Engine::Instance().GetRenderer(), origin.x, origin.y, m_mousePos.x, m_mousePos.y);
-	}
-	
+	//if (m_turret == true)
+	//{
+	//	SDL_Point origin = { m_dst.x + m_dst.w / 2, m_dst.y + m_dst.h / 2 };
+	//	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 0);
+	//	SDL_RenderDrawLine(Engine::Instance().GetRenderer(), origin.x, origin.y, m_mousePos.x, m_mousePos.y);
+	//}
+	//
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 255, 0, 255);
 	//SDL_RenderClear(Engine::Instance().GetRenderer());
-	//SDL_RenderPresent(m_pRenderer); // Flip buffers - send data to window.
+	SDL_RenderPresent(m_pRenderer); // Flip buffers - send data to window.
 	//this code below prevents SDL_RenderPresent form running twice in one frame
 	if(dynamic_cast<GameState*>(STMA::GetStates().back() ) )//if current state is gamestate
 	
@@ -444,6 +462,11 @@ void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
 	// Clean up vector.
+	for (auto& i : m_objects)
+	{
+		delete i.second; // De-allocating GameObject*s
+		i.second = nullptr; // ;)
+	}
 	for (unsigned i = 0; i < m_enemy.size(); i++)
 	{
 		delete m_enemy[i];
@@ -466,6 +489,7 @@ void GameState::Exit()
 	SDL_DestroyTexture(m_pShipTexture);
 	SDL_DestroyTexture(m_pBGTexture);
 	SDL_DestroyTexture(m_pEnemyTexture);
+	Mix_FreeChunk(hithurt);
 	Mix_FreeChunk(m_pShoot);
 	Mix_FreeChunk(m_peShoot);
 	Mix_FreeMusic(m_pMaintheme);
@@ -474,7 +498,7 @@ void GameState::Exit()
 
 void GameState::Resume()
 {
-	cout << "resuming gamestate" << endl;
+	cout << "resuming gamestate\nPRESS P TO PAUSE" << endl;
 	if (Mix_PausedMusic() == true)
 		Mix_ResumeMusic();
 	//resume music track

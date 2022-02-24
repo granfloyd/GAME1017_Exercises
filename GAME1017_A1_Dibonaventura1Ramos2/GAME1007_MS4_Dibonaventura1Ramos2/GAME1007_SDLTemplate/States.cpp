@@ -283,7 +283,6 @@ void GameState::Update()
 				m_enemy.erase(m_enemy.begin() + i);
 				m_enemy.shrink_to_fit();
 				STMA::ChangeState(new WinState());
-				return;
 				
 			}
 
@@ -303,7 +302,7 @@ void GameState::Update()
 				m_missile[i] = nullptr; // Ensures no dangling pointer.
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
-				return;
+				break;
 			}
 		}
 
@@ -323,7 +322,7 @@ void GameState::Update()
 					m_playerpew[i] = nullptr; // Ensures no dangling pointer.
 					m_playerpew.erase(m_playerpew.begin() + i); // Erase element and resize array.
 					m_playerpew.shrink_to_fit();
-					return;
+					break;
 				}
 			}
 
@@ -350,7 +349,7 @@ void GameState::Update()
 					m_enemy[j] = nullptr;
 					m_enemy.erase(m_enemy.begin() + j);
 					m_enemy.shrink_to_fit();
-					return;
+					break;
 				}
 			}
 		}
@@ -369,14 +368,10 @@ void GameState::Update()
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
 				STMA::ChangeState(new EndState());
-				return;
+				
 				
 			}
-			for (auto const& i : m_objects)
-			{
-				i.second->Update();
-				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
-			}
+			
 		}
 
 		//Collision for player vs enemies
@@ -388,13 +383,8 @@ void GameState::Update()
 				cout << "carl " << endl;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 				STMA::ChangeState(new EndState());
-				return;
 			}
-			for (auto const& i : m_objects)
-			{
-				i.second->Update();
-				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
-			}
+			
 		}
 
 		if (EVMA::KeyPressed(SDL_SCANCODE_X))

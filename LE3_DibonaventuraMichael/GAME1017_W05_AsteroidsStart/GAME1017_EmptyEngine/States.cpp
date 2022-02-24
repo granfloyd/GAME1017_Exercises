@@ -56,8 +56,8 @@ void TitleState::Enter()
 		new Image({ 0, 0, 1920, 1200 }, { 0, 0, 1024, 768 }, "bg")));
 	m_objects.push_back(pair<string, GameObject*>("title",
 		new Image({ 0, 0, 800, 156 }, { 112, 100, 800, 156 }, "title")));
-	//m_objects.push_back(pair<string, GameObject*>("play",
-		//new PlayButton({ 0, 0, 400, 100 }, { 412, 384, 200, 50 }, "play")));
+	m_objects.push_back(pair<string, GameObject*>("play",
+		new PlayButton({ 0, 0, 400, 100 }, { 412, 384, 200, 50 }, "play")));
 	SOMA::AllocateChannels(16);
 	SOMA::SetMusicVolume(32);
 	SOMA::PlayMusic("title", -1, 2000);
@@ -114,6 +114,7 @@ void GameState::Enter() // Used for initialization.
 		new AsteroidField(24)));
 	m_objects.push_back(pair<string, GameObject*>("ship",
 		new ShipAsteroids({ 0, 0, 100, 100 }, { 462.0f, 334.0f, 100.0f, 100.0f })));
+
 	SOMA::SetSoundVolume(16);
 	SOMA::SetMusicVolume(32);
 	SOMA::PlayMusic("wings", -1, 2000);
@@ -167,7 +168,7 @@ void GameState::Update()
 					//new asteroid spawn code
 					if (ast->GetSize() > 0)
 					{
-						double angle = bul->GetAngle();
+						double angle = bul->GetAngle();						
 						Asteroid* left = new Asteroid({ 539,0,61,66 },
 							{ ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f });
 						
@@ -175,10 +176,13 @@ void GameState::Update()
 							{ ast->GetDst()->x,ast->GetDst()->y,ast->GetDst()->w * 0.66f,ast->GetDst()->h * 0.66f });
 						
 						left->UpdateDeltas(angle - (30.0 + rand() % 16));
-						left->GetSize() = ast->GetSize() - 1;						
+						left->GetSize() = ast->GetSize() - 1;	
+						left->SetColMods(ast->GetColMods()[0],ast->GetColMods()[1],ast->GetColMods()[2]);
+						
 
 						right->UpdateDeltas(angle + (30.0 + rand() % 16));
 					    right->GetSize() = ast->GetSize() - 1;
+						right->SetColMods(ast->GetColMods()[0], ast->GetColMods()[1], ast->GetColMods()[2]);
 
 						field->push_back(left);
 						field->push_back(right);
@@ -195,11 +199,7 @@ void GameState::Update()
 		}
 	}
 }
-// New asteroid chunk spawn code. Hints:
-// You would only need to spawn two chunks if the asteroid that is hit is full size or one smaller than full.
-// Ask yourself why the bullet and asteroid that are colliding are only getting destroyed AFTER the two chunks spawn.
-// What data can you get from the bullet and asteroid that the chunks need?
-// End new chunk spawn code.
+
 void GameState::Render()
 {
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);

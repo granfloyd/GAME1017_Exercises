@@ -163,6 +163,8 @@
     <Image Include="Missile.png" />
     <Image Include="play.jfif" />
     <Image Include="Ship.png" />
+    <Image Include="stuff\cosmicswag.jpg" />
+    <Image Include="stuff\cosmicswagtitle.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="audio\Free.mp3" />

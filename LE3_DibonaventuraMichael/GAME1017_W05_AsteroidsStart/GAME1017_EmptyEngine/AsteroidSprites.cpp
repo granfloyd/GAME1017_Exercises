@@ -41,11 +41,17 @@ void Asteroid::SetColMods(Uint8 r, Uint8 g, Uint8 b)
 	m_rMod = r; m_gMod = g; m_bMod = b;
 }
 
-
 void Asteroid::UpdateDeltas(double angle)
 {
 	MAMA::SetDeltas(MAMA::Deg2Rad(angle - 90.0), m_dx, m_dy, 2.0f, 2.0f);
 }
+
+Uint8* Asteroid::GetColMods()
+{
+	Uint8 mods[3] = { m_rMod, m_gMod, m_bMod };
+	return mods;
+}
+
 
 AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(sz)
 {

@@ -14,9 +14,10 @@ public:
 	void Render();	
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
-	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
+	void SetColMods(Uint8 r, Uint8 g, Uint8 b);	
     int& GetSize() { return m_size; }
 	void UpdateDeltas(double angle);
+	Uint8* GetColMods();
 	
 private:
 	SDL_FPoint m_center;
@@ -25,7 +26,6 @@ private:
 		m_radius,
 		m_rotSpeed;
 	Uint8 m_rMod, m_gMod, m_bMod;
-	//new field 2->1->gone
 	int m_size;
 };
 

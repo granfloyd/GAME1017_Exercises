@@ -4,6 +4,7 @@
 #include "EventManager.h"
 #include "Button3.h"
 #include "TextureManager.h"
+#include "MathManager.h"
 #include <ctime>
 #include <iostream>
 using namespace std;
@@ -11,16 +12,19 @@ using namespace std;
 Missile::Missile(int x, int y)
 {
 	m_dst = { x,y,29,7 };
+	ebulletDst = { x,y,29,7 };
 }
 
 void Missile::Update(int moving)
 {
+	ebulletDst.x += MOVESPEED * moving;
 	m_dst.x += MOVESPEED * moving;
 }
 
 Enemy::Enemy(int x, int y) :m_enemySrc({ 0,0,200,121 })
 {
-	m_enemyDst = { x, rand() % 300 + 100,110,77 };
+	m_enemyDst = { x, rand() % 300 + 100,110,77 };	
+
 }
 
 void Enemy::Update()
@@ -76,19 +80,28 @@ void TitleState::Enter()
 {	
 		cout << "enter titlestate" << endl;	
 		m_pTitletheme = Mix_LoadMUS("aud/Titletheme.mp3");//gametheme
-		Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswag.png");
-		TEMA::Load("play.jfif", "play");
+		Title2 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswagtitle.png");
+		Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswag.jpg");
+		TEMA::Load("stuff/play.jfif", "play");
 		m_objects.push_back(pair<string, GameObject*>("play",
 			new PlayButton({ 0, 0, 200, 100 }, { 400, 555, 200, 100 }, "play")));
-		//play = IMG_LoadTexture(Engine::Instance().GetRenderer(), "play.png");
-		//playSrc = { 0,0,100,50 };
-		//playDst = { 333,440,250,100 };
+		 src = { 0,0,700,74 };
+		 dst = { 112,100,700,74 };
+		// m_center ={ (112,100,0,0)};
 		Mix_PlayMusic(m_pTitletheme, -1);
 		Mix_VolumeMusic(15); //0-128
 }
 
 void TitleState::Update()
 {
+	// Move object.
+	dst.x += EMOVESPEED;
+	if(dst.x > WIDTH)
+	// Wrap on screen.
+	//if (m_center.x < -dst.w) m_center.x = WIDTH + dst.w / 2;
+	 //if (m_center.x > WIDTH + dst.w) m_center.x = 0 - dst.w / 2;
+	// Update dest rectangle.
+	//dst.x = m_center.x - dst.w / 2;
 	/*if (EVMA::KeyPressed(SDL_SCANCODE_N))
 	{
 		cout << "changing to gamestate" << endl;
@@ -104,12 +117,14 @@ void TitleState::Update()
 void TitleState::Render()
 {
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),0,0,255,255);
-	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderClear(Engine::Instance().GetRenderer());	
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title,NULL,NULL);	
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), Title2, NULL, &dst, 00.0, NULL, SDL_FLIP_NONE);
 	for (auto const& i : m_objects)
 		i.second->Render();
 	//SDL_RenderCopy(Engine::Instance().GetRenderer(), play, &playSrc, &playDst);
 	//if (dynamic_cast<TitleState*>(STMA::GetStates().back()))//if current state is gamestate
+
 	State::Render();
 }
 
@@ -118,6 +133,7 @@ void TitleState::Exit()
 	cout << "exiting titlestate" << endl;
 	Mix_FreeMusic(m_pTitletheme);
 	SDL_DestroyTexture(Title);
+	SDL_DestroyTexture(Title2);
 	TEMA::Unload("play");
 	for (auto& i : m_objects)
 	{
@@ -171,9 +187,11 @@ GameState::GameState(){}
 void GameState::Enter()
 {
 	cout << "entering gamestate\nPRESS P TO PAUSE" << endl;
-	m_pShipTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "Ship.png");
-	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "bg1.png");
-	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "1017enemy.png");
+	m_pShipTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/Ship.png");
+	m_pBGTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/bg1.png");
+	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/1017enemy.png");
+	ebullet = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/ebullet.png");
+	
 
 	hithurt = Mix_LoadWAV("aud/hitHurt.wav");
 	m_pShoot = Mix_LoadWAV("aud/shoot.wav");
@@ -196,7 +214,7 @@ void GameState::Enter()
 
 	g_bg1 = { 0,0,1024, 768 };
 	g_bg2 = { 1024,0,1024, 768 };
-
+	//ebulletSrc = { 0,0,29,7 };
 	
 	m_enemyTimer = 0;
 }
@@ -261,7 +279,7 @@ void GameState::Update()
 			if (m_enemy[i]->frames >= FPS * EFIRERATE / 2)
 			{
 				m_enemy[i]->resetFrames();
-				cout << "are you gonna finsih that croissant" << endl;
+				cout << "e fire" << endl;
 				Mix_PlayChannel(-1, m_peShoot, 0);
 				m_missile.push_back(new Missile(m_enemy[i]->m_enemyDst.x, m_enemy[i]->m_enemyDst.y + 45));
 				m_missile.shrink_to_fit();
@@ -282,6 +300,7 @@ void GameState::Update()
 				m_enemy[i] = nullptr;
 				m_enemy.erase(m_enemy.begin() + i);
 				m_enemy.shrink_to_fit();
+				cout << "bye";
 				STMA::ChangeState(new WinState());
 				return;
 				
@@ -297,7 +316,7 @@ void GameState::Update()
 		// Deallocate enemy missile that go off-screen.
 		for (unsigned i = 0; i < m_missile.size(); i++)
 		{
-			if (m_missile[i]->m_dst.x <= -m_missile[i]->m_dst.w)
+			if (m_missile[i]->ebulletDst.x <= -m_missile[i]->ebulletDst.w)
 			{
 				delete m_missile[i]; // Deallocates missile through pointer.
 				m_missile[i] = nullptr; // Ensures no dangling pointer.
@@ -358,7 +377,7 @@ void GameState::Update()
 		//Collision enemy missile to player
 		for (unsigned i = 0; i < m_missile.size(); i++)
 		{
-			if (SDL_HasIntersection(&m_missile[i]->m_dst, &m_dst))
+			if (SDL_HasIntersection(&m_missile[i]->ebulletDst, &m_dst))
 			{
 				cout << "died to enemy bullet" << endl;
 				//destoyer 
@@ -432,24 +451,15 @@ void GameState::Render()
 	}
 
 	//enemy missile
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 111,111, 0, 255);
+	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 111,111, 0, 255);
 	for (unsigned i = 0; i < m_missile.size(); i++)
 	{
-		SDL_RenderFillRect(Engine::Instance().GetRenderer(), &(m_missile[i]->m_dst));
+		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), ebullet,NULL, &(m_missile[i]->ebulletDst),00.0, NULL, SDL_FLIP_NONE);
 	}
 
 	// Render sprite.		
 	// For the ship.
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pShipTexture, NULL, &m_dst, 90.00, NULL, SDL_FLIP_NONE);
-	//if (m_turret == true)
-	//{
-	//	SDL_Point origin = { m_dst.x + m_dst.w / 2, m_dst.y + m_dst.h / 2 };
-	//	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 0);
-	//	SDL_RenderDrawLine(Engine::Instance().GetRenderer(), origin.x, origin.y, m_mousePos.x, m_mousePos.y);
-	//}
-	//
-	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 255, 0, 255);
-	//SDL_RenderClear(Engine::Instance().GetRenderer());
 	SDL_RenderPresent(m_pRenderer); // Flip buffers - send data to window.
 	//this code below prevents SDL_RenderPresent form running twice in one frame
 	if(dynamic_cast<GameState*>(STMA::GetStates().back() ) )//if current state is gamestate
@@ -489,6 +499,7 @@ void GameState::Exit()
 	SDL_DestroyTexture(m_pShipTexture);
 	SDL_DestroyTexture(m_pBGTexture);
 	SDL_DestroyTexture(m_pEnemyTexture);
+	SDL_DestroyTexture(ebullet);
 	Mix_FreeChunk(hithurt);
 	Mix_FreeChunk(m_pShoot);
 	Mix_FreeChunk(m_peShoot);
@@ -511,10 +522,10 @@ void EndState::Enter()
 {
 	cout << "entering endstate" << endl;
 	hurt2 = Mix_LoadWAV("aud/hurt2.mp3");//endsfx
-	TitleL = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswagL.png");
+	TitleL = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswagL.png");
 	Mix_PlayChannel(-1,hurt2, 0);
 	Mix_Volume(-1, 28); //0-128
-	TEMA::Load("mainmenu.jfif", "mainmenu");
+	TEMA::Load("stuff/mainmenu.jfif", "mainmenu");
 	m_objects.push_back(pair<string, GameObject*>("mainmenu",
 		new Mainmenu({ 0, 0, 200, 100 }, { 400, 655, 200, 100 }, "mainmenu")));
 }
@@ -567,10 +578,10 @@ void WinState::Enter()
 {
 	cout << "entering winstate" << endl;
 	wintheme = Mix_LoadMUS("aud/win.mp3");//endtheme
-	TitleW = IMG_LoadTexture(Engine::Instance().GetRenderer(), "cosmicswagW.png");
+	TitleW = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswagW.png");
 	Mix_PlayMusic(wintheme, -1);
 	Mix_VolumeMusic(33); //0-128
-	TEMA::Load("mainmenu.jfif", "mainmenu");
+	TEMA::Load("stuff/mainmenu.jfif", "mainmenu");
 	m_objects.push_back(pair<string, GameObject*>("mainmenu",
 		new Mainmenu({ 0, 0, 200, 100 }, { 400, 655, 200, 100 }, "mainmenu")));
 }

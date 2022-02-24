@@ -20,8 +20,11 @@ using namespace std;
 class Missile
 {
 public:
-	SDL_Rect m_src, m_dst;
-	
+	//player bullet
+	SDL_Rect m_dst, m_src;
+
+	//enemy bullet
+	SDL_Rect ebulletSrc, ebulletDst;
 	Missile(int = 0, int = 0); 
 	void Update(int moving);
 	

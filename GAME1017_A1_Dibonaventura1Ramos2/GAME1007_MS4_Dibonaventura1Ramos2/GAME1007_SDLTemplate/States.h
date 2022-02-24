@@ -25,7 +25,6 @@ class State//this is the abstract base class for all state subclasses
 public:
 	SDL_Texture* Title;
 	
-	
 	virtual void Enter() = 0;
 	virtual void Update() = 0;
 	virtual void Render();
@@ -46,11 +45,16 @@ class TitleState : public State
 {
 private:
 	Mix_Music* m_pTitletheme;
-
+	SDL_Texture* Title2;
+	SDL_Rect src, dst;
+	SDL_Rect m_center;
+	double m_dx, m_dy, m_angle;
 	//SDL_Texture* play;
 	//SDL_Rect playSrc, playDst;
 public:
 	TitleState();
+	const SDL_Rect& GetCenter() { return m_center; }
+	double GetAngle() { return m_angle; }
 	virtual void Enter();
 	virtual void Update();
 	virtual void Render();
@@ -95,7 +99,7 @@ private:
 	SDL_Texture* m_pBGTexture;//background
 	SDL_Texture* m_pEnemyTexture;//enemy/carl
 	SDL_Texture* m_pShipTexture; // lilspaceship
-
+	SDL_Texture* ebullet;
 
    //Audio
 	Mix_Chunk* hithurt;
@@ -108,10 +112,14 @@ private:
 	SDL_Rect m_player; // For primitive rectangle.d
 	SDL_Rect m_src, m_dst; // For the ship sprite.
 	SDL_Rect g_bg1, g_bg2;
+	
 	SDL_Point m_mousePos;
 
 	SDL_Rect m_pew;
+	//ebullet
 	vector<Missile*> m_missile;
+
+	//player bullet
 	vector<Missile*> m_playerpew;
 	vector<Enemy*> m_enemy;
 	SDL_Rect m_enemySrc, m_enemyDst;

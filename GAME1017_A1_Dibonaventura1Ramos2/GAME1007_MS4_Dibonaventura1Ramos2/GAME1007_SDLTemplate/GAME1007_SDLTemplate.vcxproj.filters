@@ -63,6 +63,12 @@
     <Image Include="cosmicswagW.png">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="stuff\cosmicswag.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="stuff\cosmicswagtitle.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

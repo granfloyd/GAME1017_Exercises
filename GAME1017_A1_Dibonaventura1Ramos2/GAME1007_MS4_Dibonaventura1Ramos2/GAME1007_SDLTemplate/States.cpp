@@ -78,7 +78,7 @@ TitleState::TitleState(){}
 
 void TitleState::Enter()
 {	
-		cout << "enter titlestate" << endl;	
+		cout << "enter titlestate\nwow cool moving title" << endl;	
 		m_pTitletheme = Mix_LoadMUS("aud/Titletheme.mp3");//gametheme
 		Title2 = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswagtitle.png");
 		Title = IMG_LoadTexture(Engine::Instance().GetRenderer(), "stuff/cosmicswag.jpg");
@@ -86,7 +86,10 @@ void TitleState::Enter()
 		m_objects.push_back(pair<string, GameObject*>("play",
 			new PlayButton({ 0, 0, 200, 100 }, { 400, 555, 200, 100 }, "play")));
 		 src = { 0,0,700,74 };
-		 dst = { 112,100,700,74 };
+		 dst = { 0,100,700,74 };
+		 dst2 = { 800,100,700,74 };
+		 end = { 1024,100,700,74 };
+		 newdst = { -700,100,700,74 };
 		// m_center ={ (112,100,0,0)};
 		Mix_PlayMusic(m_pTitletheme, -1);
 		Mix_VolumeMusic(15); //0-128
@@ -96,7 +99,15 @@ void TitleState::Update()
 {
 	// Move object.
 	dst.x += EMOVESPEED;
-	if(dst.x > WIDTH)
+	dst2.x += EMOVESPEED;
+	if (dst.x == end.x)  
+	{
+		dst = newdst;		
+	}
+	if (dst2.x == end.x)
+	{
+		dst2 = newdst;
+	}
 	// Wrap on screen.
 	//if (m_center.x < -dst.w) m_center.x = WIDTH + dst.w / 2;
 	 //if (m_center.x > WIDTH + dst.w) m_center.x = 0 - dst.w / 2;
@@ -120,6 +131,7 @@ void TitleState::Render()
 	SDL_RenderClear(Engine::Instance().GetRenderer());	
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), Title,NULL,NULL);	
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), Title2, NULL, &dst, 00.0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), Title2, NULL, &dst2, 00.0, NULL, SDL_FLIP_NONE);
 	for (auto const& i : m_objects)
 		i.second->Render();
 	//SDL_RenderCopy(Engine::Instance().GetRenderer(), play, &playSrc, &playDst);

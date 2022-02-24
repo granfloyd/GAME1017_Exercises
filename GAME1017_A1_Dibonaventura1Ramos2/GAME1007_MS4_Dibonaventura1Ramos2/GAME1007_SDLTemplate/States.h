@@ -46,15 +46,13 @@ class TitleState : public State
 private:
 	Mix_Music* m_pTitletheme;
 	SDL_Texture* Title2;
-	SDL_Rect src, dst;
-	SDL_Rect m_center;
-	double m_dx, m_dy, m_angle;
+	SDL_Rect src, dst,dst2;
+	SDL_Rect end;//when title goes offscreen
+	SDL_Rect newdst;
 	//SDL_Texture* play;
 	//SDL_Rect playSrc, playDst;
 public:
-	TitleState();
-	const SDL_Rect& GetCenter() { return m_center; }
-	double GetAngle() { return m_angle; }
+	TitleState();	
 	virtual void Enter();
 	virtual void Update();
 	virtual void Render();

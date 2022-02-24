@@ -1,6 +1,11 @@
 /*******************************************************************************
 * File Name   :		 GAME1017_A1_Dibonaventura1Ramos2.
-* Description :	https://cooltext.com/
+* Description :	
+title png made using cooltext.com/for 
+* win and lose state aud: Evangelion www.youtube.com/watch?v=Un4p-6lzIpI
+* 
+* title theme  www.youtube.com/watch?v=2wm8mZHyeQg Contemplation of Snow] Albedo Theme Genshin Impact Concert Cover
+* 
 * Note        :dont forgor to delete the vs folder
 * Author      :	Michael Dibonaventura1 Shari Ramos2
 * Created     :	dec 15 2021ms4

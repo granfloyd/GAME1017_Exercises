@@ -20,7 +20,7 @@ void TextureManager::Load(const char* path, const std::string key)
 	else
 	{
 		s_textures.emplace(key, temp); // Add to the map.
-		std::cout << "Successfully loaded texture '" << key << "'!" << std::endl;
+		//std::cout << "Successfully loaded texture '" << key << "'!" << std::endl;
 	}
 }
 

@@ -13,8 +13,8 @@
 #include "TiledLevel.h"
 #define SPEED 5
 #define MOVESPEED 7
-#define ESPAWN 3
-#define EFIRERATE 2
+#define ESPAWN 4
+#define EFIRERATE 3
 #define EMOVESPEED 4
 using namespace std;
 //an abstract class is one that cannot be instantiated
@@ -92,7 +92,7 @@ private:
 	const Uint8* m_keystates;
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
-
+	int counter;
 
 	SDL_Texture* m_pBGTexture;//background
 	SDL_Texture* m_pEnemyTexture;//enemy/carl
@@ -140,7 +140,7 @@ class EndState : public State
 private:
 	SDL_Texture* TitleL;
 	Mix_Chunk* hurt2;
-
+	Mix_Music* sage;
 public:
 	EndState();
 	virtual void Enter();

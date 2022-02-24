@@ -152,21 +152,6 @@
     <ClInclude Include="TiledLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="1017enemy.png" />
-    <Image Include="Bg.png" />
-    <Image Include="cosmicswag.png" />
-    <Image Include="cosmicswagL.png" />
-    <Image Include="cosmicswagW.png" />
-    <Image Include="Enemy.png" />
-    <Image Include="mainmenu.jfif" />
-    <Image Include="mainmenu.png" />
-    <Image Include="Missile.png" />
-    <Image Include="play.jfif" />
-    <Image Include="Ship.png" />
-    <Image Include="stuff\cosmicswag.jpg" />
-    <Image Include="stuff\cosmicswagtitle.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Media Include="audio\Free.mp3" />
     <Media Include="audio\Longcringe.mp3" />
     <Media Include="audio\MainTheme.mp3" />
@@ -182,6 +167,10 @@
     <ClCompile Include="States.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TiledLevel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="stuff\cosmicswagL.png" />
+    <Image Include="stuff\cosmicswagW.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

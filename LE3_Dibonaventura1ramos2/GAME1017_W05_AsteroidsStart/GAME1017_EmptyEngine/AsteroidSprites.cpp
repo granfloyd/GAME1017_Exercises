@@ -53,7 +53,7 @@ Uint8* Asteroid::GetColMods()
 }
 
 
-AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(sz)
+AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(9)
 {
 	for (int i = 0; i < m_size; i++)
 	{
@@ -149,7 +149,7 @@ void ShipAsteroids::Update()
 	else if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		m_angle += m_rotSpeed;
 	// Spawn bullet.
-	if (EVMA::MouseHeld(1))//mouse pressed
+	if (EVMA::MousePressed(1))//mouse pressed
 	{
 		m_bullets.push_back(new Bullet({500,0,18,24},
 			{m_center.x - 9,m_center.y -12,18,24},

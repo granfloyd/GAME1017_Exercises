@@ -38,44 +38,14 @@
     <Media Include="audio\MainTheme.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Bg.png" />
-    <Image Include="Enemy.png" />
-    <Image Include="Missile.png" />
-    <Image Include="Ship.png" />
-    <Image Include="cosmicswag.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="mainmenu.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="play.jfif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="mainmenu.jfif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="1017enemy.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="cosmicswagL.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="cosmicswagW.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="stuff\cosmicswag.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="stuff\cosmicswagtitle.png">
-      <Filter>Source Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{26c19b4b-d42f-4baa-b05f-70c9eb7f9a31}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{75f2e3e8-b5c2-41ce-bcca-c0b94af6edd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stuff">
+      <UniqueIdentifier>{aadcbb4b-4100-4257-82f2-c27442b279c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,5 +79,13 @@
     <ClCompile Include="TiledLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="stuff\cosmicswagL.png">
+      <Filter>Source Files\stuff</Filter>
+    </Image>
+    <Image Include="stuff\cosmicswagW.png">
+      <Filter>Source Files\stuff</Filter>
+    </Image>
   </ItemGroup>
 </Project>

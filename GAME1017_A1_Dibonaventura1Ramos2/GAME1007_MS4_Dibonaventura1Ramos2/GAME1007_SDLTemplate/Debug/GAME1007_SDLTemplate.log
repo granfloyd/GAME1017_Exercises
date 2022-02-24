@@ -1,5 +1,8 @@
-﻿  States.cpp
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(253,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(259,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(492,27): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+﻿  Engine.cpp
+  StateManager.cpp
+  States.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(272,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(278,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\GAME1007_SDLTemplate\States.cpp(499,27): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+  Generating Code...
   GAME1007_SDLTemplate.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\GAME1017_A1_Dibonaventura1Ramos2\GAME1007_MS4_Dibonaventura1Ramos2\Debug\GAME1007_SDLTemplate.exe

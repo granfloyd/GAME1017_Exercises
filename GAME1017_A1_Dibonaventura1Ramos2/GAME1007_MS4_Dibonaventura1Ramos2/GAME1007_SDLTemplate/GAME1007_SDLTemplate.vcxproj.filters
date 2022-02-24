@@ -33,38 +33,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="audio\Free.mp3" />
-    <Media Include="audio\Longcringe.mp3" />
-    <Media Include="audio\MainTheme.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Bg.png" />
-    <Image Include="Enemy.png" />
-    <Image Include="Missile.png" />
-    <Image Include="Ship.png" />
-    <Image Include="cosmicswag.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="mainmenu.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="play.jfif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="mainmenu.jfif">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="1017enemy.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="cosmicswagL.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="cosmicswagW.png">
-      <Filter>Source Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{26c19b4b-d42f-4baa-b05f-70c9eb7f9a31}</UniqueIdentifier>
     </Filter>

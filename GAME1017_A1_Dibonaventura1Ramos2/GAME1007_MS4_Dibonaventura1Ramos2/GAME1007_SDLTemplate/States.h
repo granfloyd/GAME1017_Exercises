@@ -17,6 +17,28 @@
 #define EFIRERATE 2
 #define EMOVESPEED 4
 using namespace std;
+
+class Missile
+{
+public:
+	SDL_Rect m_src, m_dst;
+
+	Missile(int = 0, int = 0);
+	void Update(int moving);
+
+
+};
+
+class Enemy
+{
+public:
+	SDL_Rect m_enemySrc, m_enemyDst;
+	Uint16 frames = 0;
+	Enemy(int = 0, int = 0);
+	void Update();
+	void resetFrames();
+
+};
 //an abstract class is one that cannot be instantiated
 //why because theyd be a base class most likely
 class State//this is the abstract base class for all state subclasses
@@ -34,6 +56,7 @@ public:
 	virtual ~State() {} // or = default;
 	GameObject* GetGo(const std::string& s);
 	auto GetIt(const std::string& s);
+
 protected: //priv but inherited
 
 	State() {}//or... State(){};
@@ -46,9 +69,10 @@ class TitleState : public State
 {
 private:
 	Mix_Music* m_pTitletheme;
-
-	//SDL_Texture* play;
-	//SDL_Rect playSrc, playDst;
+	SDL_Texture* Title2;
+	SDL_Rect src, dst, dst2;
+	SDL_Rect end;//when title goes offscreen
+	SDL_Rect newdst;
 public:
 	TitleState();
 	virtual void Enter();
@@ -79,6 +103,9 @@ public:
 class GameState : public State
 {
 private:	
+	vector<Missile*> m_missile;
+	vector<Missile*> m_playerpew;
+	vector<Enemy*> m_enemy;
 	//double m_angle = 0.0;
     //bool m_running = false;
 	//bool m_running = false;
@@ -111,9 +138,7 @@ private:
 	SDL_Point m_mousePos;
 
 	SDL_Rect m_pew;
-	vector<Missile*> m_missile;
-	vector<Missile*> m_playerpew;
-	vector<Enemy*> m_enemy;
+	
 	SDL_Rect m_enemySrc, m_enemyDst;
 	Uint16 m_enemyTimer;
 

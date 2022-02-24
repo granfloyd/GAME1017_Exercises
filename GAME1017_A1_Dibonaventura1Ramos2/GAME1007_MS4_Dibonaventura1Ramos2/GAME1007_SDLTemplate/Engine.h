@@ -12,32 +12,7 @@
 #define FPS 60
 #define WIDTH 1024
 #define HEIGHT 768
-
-
-
 using namespace std;
-
-class Missile
-{
-public:
-	SDL_Rect m_src, m_dst;
-	
-	Missile(int = 0, int = 0); 
-	void Update(int moving);
-	
-	
-};
-	
-class Enemy
-{
-	public:
-		SDL_Rect m_enemySrc, m_enemyDst;
-		Uint16 frames = 0;
-		Enemy(int = 0, int = 0);
-		void Update();
-		void resetFrames();
-	
-};
 
 class Engine
 {

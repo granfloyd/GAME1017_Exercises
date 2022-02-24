@@ -3,12 +3,14 @@
 void StateManager::Update()
 {
 	s_stateChange = false;
+	
 	if (!s_states.empty())
 		s_states.back()->Update();//s_states.back represents the current state running
 }
 
 void StateManager::Render()
 {
+
 	if (!s_states.empty())
 		s_states.back()->Render();
 }
@@ -27,7 +29,7 @@ void StateManager::PopState()//going from pause back to game
 	if (!s_states.empty())
 	{
 		s_states.back()->Exit();//cleans up curret state 
-		//delete s_states.back();// deallocates current state
+		delete s_states.back();// deallocates current state
 		s_states.back() = nullptr;//wranle our dangle..... 
 		s_states.pop_back();//removed nullptr to deallocated current state 
 	}
@@ -40,7 +42,7 @@ void StateManager::ChangeState(State* pState)
 	if (!s_states.empty())
 	{
 		s_states.back()->Exit();//cleans up curret state 
-		//delete s_states.back();// deallocates current state//crashes  here
+		delete s_states.back();// deallocates current state//crashes  here
 		s_states.back() = nullptr;//wranle our dangle..... 
 		s_states.pop_back();//removed nullptr to deallocated current state 
 	}
@@ -54,7 +56,7 @@ void StateManager::Quit()
 	while (!s_states.empty())
 	{
 		s_states.back()->Exit();//cleans up curret state 
-		//delete s_states.back();// deallocates current state //crashes here
+		delete s_states.back();// deallocates current state //crashes here
 		s_states.back() = nullptr;
 		s_states.pop_back();//removed nullptr to deallocated current state 
 	}

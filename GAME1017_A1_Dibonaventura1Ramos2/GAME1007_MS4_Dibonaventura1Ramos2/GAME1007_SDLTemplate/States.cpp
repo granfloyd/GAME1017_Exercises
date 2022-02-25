@@ -313,8 +313,8 @@ void GameState::Update()
 				m_enemy.erase(m_enemy.begin() + i);
 				m_enemy.shrink_to_fit();
 				cout << "bye";
-				STMA::ChangeState(new WinState());
-				return;
+				//STMA::ChangeState(new WinState());
+				break;
 				
 			}
 
@@ -369,8 +369,6 @@ void GameState::Update()
 			{
 				if (SDL_HasIntersection(&m_playerpew[i]->m_dst, &m_enemy[j]->m_enemyDst)) //AABB Check
 				{
-					
-					
 					Mix_PlayChannel(-1, hithurt, 0);
 					//Deallcoate bullet that hits enemy
 					delete m_playerpew[i]; // Deallocates bullet through pointer.
@@ -404,15 +402,11 @@ void GameState::Update()
 				m_missile[i] = nullptr; // Ensures no dangling pointer.
 				m_missile.erase(m_missile.begin() + i); // Erase element and resize array.
 				m_missile.shrink_to_fit();
-				STMA::ChangeState(new EndState());
-				return;
+				//STMA::ChangeState(new EndState());
+				break;
 				
 			}
-			for (auto const& i : m_objects)
-			{
-				i.second->Update();
-				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
-			}
+			
 		}
 
 		//Collision for player vs enemies
@@ -424,13 +418,9 @@ void GameState::Update()
 				cout << "carl " << endl;
 				m_dst = { WIDTH / 2, HEIGHT / 2, 0, 0 };
 				STMA::ChangeState(new EndState());
-				return;
+				
 			}
-			for (auto const& i : m_objects)
-			{
-				i.second->Update();
-				if (STMA::StateChanging()) return; // Not needed currently, because no buttons that trigger state change.
-			}
+			
 		}
 
 		if (EVMA::KeyPressed(SDL_SCANCODE_X))
@@ -489,11 +479,6 @@ void GameState::Exit()
 {
 	cout << "exiting gamestate" << endl;
 	// Clean up vector.
-	for (auto& i : m_objects)
-	{
-		delete i.second; // De-allocating GameObject*s
-		i.second = nullptr; // ;)
-	}
 	for (unsigned i = 0; i < m_enemy.size(); i++)
 	{
 		delete m_enemy[i];
@@ -509,6 +494,7 @@ void GameState::Exit()
 		delete m_playerpew[i];
 		m_playerpew[i] = nullptr;
 	}
+	
 	m_playerpew.clear(); // Removes all elements. Size = 0.
 	m_playerpew.shrink_to_fit();// Sets capacity to size.
 	m_missile.clear();

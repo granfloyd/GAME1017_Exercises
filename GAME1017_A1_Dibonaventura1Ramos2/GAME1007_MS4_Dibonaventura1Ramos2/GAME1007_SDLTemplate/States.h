@@ -11,10 +11,10 @@
 #include "Engine.h"
 #define SPEED 5
 #define MOVESPEED 7
-#define ESPAWN 4
+#define ESPAWN 1.5
 #define EFIRERATE 3
 #define EMOVESPEED 4
-#define MTITLE 4
+#define MTITLE 4 //moving title speed
 using namespace std;
 //an abstract class is one that cannot be instantiated
 //why because theyd be a base class most likely

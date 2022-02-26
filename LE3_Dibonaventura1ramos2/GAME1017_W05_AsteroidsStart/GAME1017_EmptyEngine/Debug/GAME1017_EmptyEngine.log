@@ -1,3 +1,2 @@
-﻿  AsteroidSprites.cpp
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE3_Dibonaventura1ramos2\GAME1017_W05_AsteroidsStart\GAME1017_EmptyEngine\AsteroidSprites.cpp(52): warning C4172: returning address of local variable or temporary: mods
+﻿  States.cpp
   GAME1017_EmptyEngine.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE3_Dibonaventura1ramos2\GAME1017_W05_AsteroidsStart\Debug\GAME1017_EmptyEngine.exe

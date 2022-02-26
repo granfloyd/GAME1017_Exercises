@@ -9,13 +9,12 @@
 #include "SDL_image.h"
 #include "SDL_mixer.h"
 #include "Engine.h"
-#include "GameObject.h"
-#include "TiledLevel.h"
 #define SPEED 5
 #define MOVESPEED 7
 #define ESPAWN 4
 #define EFIRERATE 3
 #define EMOVESPEED 4
+#define MTITLE 4
 using namespace std;
 //an abstract class is one that cannot be instantiated
 //why because theyd be a base class most likely
@@ -31,12 +30,9 @@ public:
 	virtual void Exit() = 0;
 	virtual void Resume();
 	virtual ~State() {} // or = default;
-	GameObject* GetGo(const std::string& s);
-	auto GetIt(const std::string& s);
 protected: //priv but inherited
 
 	State() {}//or... State(){};
-	vector<std::pair<std::string, GameObject*>> m_objects;
 };
 
 
@@ -49,8 +45,8 @@ private:
 	SDL_Rect src, dst,dst2;
 	SDL_Rect end;//when title goes offscreen
 	SDL_Rect newdst;
-	//SDL_Texture* play;
-	//SDL_Rect playSrc, playDst;
+	SDL_Texture* play;
+	SDL_Rect playSrc, playDst;
 public:
 	TitleState();	
 	virtual void Enter();
@@ -141,7 +137,9 @@ private:
 	SDL_Texture* TitleL;
 	Mix_Chunk* hurt2;
 	Mix_Music* sage;
-public:
+	SDL_Texture* menyou;
+	SDL_Rect menyouSrc, menyouDst;
+public:	
 	EndState();
 	virtual void Enter();
 	virtual void Update();
@@ -153,8 +151,11 @@ public:
 class WinState : public State
 {
 private:
+	SDL_Texture* menyou;
+	SDL_Rect menyouSrc, menyouDst;
 	Mix_Music* wintheme;
 	SDL_Texture* TitleW;
+
 public:
 	WinState();
 	virtual void Enter();

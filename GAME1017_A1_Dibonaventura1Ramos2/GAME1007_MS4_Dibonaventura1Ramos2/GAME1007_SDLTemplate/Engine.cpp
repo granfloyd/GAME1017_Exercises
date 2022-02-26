@@ -124,7 +124,7 @@ Engine& Engine::Instance()//no static keyword required
 void Engine::Clean()
 {
 	cout << "cleaning up..." << endl;
-	STMA::Quit();	
+	STMA::Quit();
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
 	Mix_CloseAudio();

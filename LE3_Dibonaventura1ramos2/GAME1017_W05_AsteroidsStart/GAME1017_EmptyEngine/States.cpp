@@ -150,7 +150,7 @@ void GameState::Update()
 				delete ship;
 				m_objects.erase(GetIt("ship")); // Erases whole ship std::pair.
 				m_objects.shrink_to_fit();
-				return;
+				break;
 			}
 		}
 		// Bullets vs. asteroids. With temp fields for bullets.
@@ -193,7 +193,7 @@ void GameState::Update()
 					delete ast;
 					field->erase(field->begin() + j);
 					field->shrink_to_fit();
-					return;
+					break;
 				}
 			}
 		}

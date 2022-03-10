@@ -184,7 +184,7 @@ void GameState::Enter()
 	m_src = { 0, 0, 130, 190 }; // Clips out entire image.
 	m_dst = { WIDTH / 2, HEIGHT / 2, 130, 190 }; // On screen location/appearance.
 
-	m_pew = { 0,0,29,7 };//sdl rect	
+	//m_pew = { 0,0,29,7 };//sdl rect	
 
 	g_bg1 = { 0,0,1024, 768 };
 	g_bg2 = { 1024,0,1024, 768 };

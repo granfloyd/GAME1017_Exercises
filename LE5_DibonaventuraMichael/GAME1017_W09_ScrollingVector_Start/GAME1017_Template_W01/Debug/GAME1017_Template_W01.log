@@ -1,5 +1,6 @@
 ﻿  Box.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Box.cpp(21,41): error C2572: 'Box::Box': redefinition of default argument: parameter 1
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Box.h(30): message : see declaration of 'Box::Box'
   Engine.cpp
   Main.cpp
   Generating Code...
-  GAME1017_Template_W01.vcxproj -> D:\_\GAME1017_W09_Vector2D\Debug\GAME1017_Template_W01.exe

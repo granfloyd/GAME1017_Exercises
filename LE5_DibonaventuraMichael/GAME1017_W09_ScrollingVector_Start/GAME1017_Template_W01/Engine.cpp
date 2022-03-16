@@ -34,7 +34,14 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	srand((unsigned)time(NULL)); // Seed random number sequence.
 	
 	// Create the vector now.
-	
+	vec.reserve(9);
+	for (int i = 0; i < 9;i++)
+	{
+		vec.push_back(new Box({ 128*i, 384 }));
+	}
+	//set the gap properties
+	gapCounter = 0;
+	gapMax = 3;
 	m_bRunning = true; // Everything is okay, start the engine.
 	cout << "Init success!" << endl;
 	return true;
@@ -88,8 +95,24 @@ bool Engine::KeyDown(SDL_Scancode c)
 void Engine::Update()
 {
 	// Check if first column of main vector goes out of bounds.
+	if (vec[0]->GetPos().x <= -128)
+	{
+		//pop the first element off 
+		delete vec[0];//deallocates box
+		vec.erase(vec.begin());// "pop_front"
+		//add a new Box to the end 
+		if (gapCounter++ % gapMax == 0)//create box with sprite
+		{
+			SDL_Color col = { 100 + rand() % 156, 100 + rand() % 156,255 };
+			vec.push_back(new Box({ 1024,384 },true, { 1024,384,128,128 },col));
+		}
+		else
+			vec.push_back(new Box({ 1024,384 }));//empty box
+	}
+	// update the boxes that scoll themselves.
+	for (unsigned int i = 0; i < vec.size();i++)
+	vec[i]->Update();
 	
-	// Scroll the boxes.
 	
 }
 
@@ -98,7 +121,8 @@ void Engine::Render()
 	SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(m_pRenderer); // Clear the screen with the draw color.
 	// Render stuff.
-	
+	for (unsigned int i = 0; i < vec.size();i++)
+		vec[i]->Render();
 	// Draw anew.
 	SDL_RenderPresent(m_pRenderer);
 }
@@ -106,7 +130,11 @@ void Engine::Render()
 void Engine::Clean()
 {
 	cout << "Cleaning game." << endl;
-	
+	for (unsigned int i = 0; i < vec.size();i++)
+	{
+		delete vec[i];
+		vec[i] = nullptr;
+	}
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
 	SDL_Quit();

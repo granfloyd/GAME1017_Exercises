@@ -1,6 +1,4 @@
-﻿  Box.cpp
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Box.cpp(21,41): error C2572: 'Box::Box': redefinition of default argument: parameter 1
-C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Box.h(30): message : see declaration of 'Box::Box'
-  Engine.cpp
-  Main.cpp
-  Generating Code...
+﻿  Engine.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Engine.cpp(106,26): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\GAME1017_Template_W01\Engine.cpp(106,46): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
+  GAME1017_Template_W01.vcxproj -> C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\GAME1017ex\LE5_DibonaventuraMichael\GAME1017_W09_ScrollingVector_Start\Debug\GAME1017_Template_W01.exe

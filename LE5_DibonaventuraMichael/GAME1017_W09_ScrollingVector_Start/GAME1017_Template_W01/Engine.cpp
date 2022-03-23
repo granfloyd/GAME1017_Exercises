@@ -103,11 +103,12 @@ void Engine::Update()
 		//add a new Box to the end 
 		if (gapCounter++ % gapMax == 0)//create box with sprite
 		{
-			SDL_Color col = { 100 + rand() % 156, 100 + rand() % 156,255 };
-			vec.push_back(new Box({ 1024,384 },true, { 1024,384,128,128 },col));
+			SDL_Color col = { 100 + rand() % 156,
+				100 + rand() % 156 ,100 + rand() % 156,255 };
+			vec.push_back(new Box({ 1024,384 },true,
+				{ 1024,384,128,128 },col));
 		}
-		else
-			vec.push_back(new Box({ 1024,384 }));//empty box
+		else vec.push_back(new Box({ 1024, 384 }));//empty box
 	}
 	// update the boxes that scoll themselves.
 	for (unsigned int i = 0; i < vec.size();i++)
@@ -135,6 +136,7 @@ void Engine::Clean()
 		delete vec[i];
 		vec[i] = nullptr;
 	}
+	vec.clear();
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
 	SDL_Quit();

@@ -1,0 +1,19 @@
+﻿  Button3.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\Button3.h(6,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  CollisionManager.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\CollisionManager.h(6,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Engine.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\Engine.h(8,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  EventManager.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\EventManager.h(5,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Main.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\Main.cpp(10,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  MathManager.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\MathManager.h(7,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Primitives.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\GameObject.h(5,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  SoundManager.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\SoundManager.h(8,10): fatal error C1083: Cannot open include file: 'SDL_mixer.h': No such file or directory
+  StateManager.cpp
+C:\Users\Michael\OneDrive\Desktop\gbc\GAME1017\game1017lecture_ex\GAME1017_W06_PlatformStart\GAME1017_EmptyEngine\Engine.h(8,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  States.cpp

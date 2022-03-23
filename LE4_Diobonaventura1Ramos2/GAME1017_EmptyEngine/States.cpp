@@ -89,11 +89,12 @@ GameState::GameState(){}
 void GameState::Enter() // Used for initialization.
 {
 	TEMA::Load("Img/Tiles.png", "tiles");
+	TEMA::Load("Img/Player.png", "player");
 	//load player img and give it a key string of "player"
 	m_objects.push_back(pair<string, GameObject*>("level", new TiledLevel(
 		24, 32, 32, 32, "Dat/Tiledata.txt", "Dat/Level1.txt", "tiles")));
 	m_objects.push_back(pair<string,GameObject*>("player",new PlatformPlayer(
-		{ 0,0,0,0 }, {288,480,64,64})));
+		{ 0,0,128,128 }, {288,480,64,64})));
 	
 }
 
@@ -108,6 +109,42 @@ void GameState::Update()
 	{
 		i.second->Update();
 		if (STMA::StateChanging()) return;
+	}
+	//check collision
+	PlatformPlayer* pObj = static_cast<PlatformPlayer*>(GetGo("player"));
+	SDL_FRect* pBound = pObj->GetDst();
+	TiledLevel* pLevel = static_cast<TiledLevel*>(GetGo("level"));
+	for (unsigned int i =0; i < pLevel->GetObstacles().size();i++)
+	{
+		SDL_FRect* pTile = pLevel->GetObstacles()[i]->GetDst();
+		if (COMA::AABBCheck(*pBound, *pTile))
+		{
+			//if colliding with top side of tile
+			if ((pBound->y + pBound->h) - (float)pObj->GetVelY() <= pTile->y)
+			{
+				pObj->StopY();
+				pObj->SetY(pTile->y - pBound->h);
+				pObj->SetGrounded(true);
+			}
+			//if colliding with bottom side of tile
+			else if (pBound->y - (float)pObj->GetVelY() >= pTile->y + pTile->h)
+			{
+				pObj->StopY();
+				pObj->SetY(pTile->y + pTile->h);
+			}
+			//colliding with left tile
+			else if ((pBound->x + pBound->w) -(float)pObj->GetVelX() <= pTile->x)
+			{
+				pObj->StopX();
+				pObj->SetX(pTile->x - pTile->w);
+			}
+			//colliding weith right tile
+			else if (pBound->x - (float)pObj->GetVelX() >= (pTile->x + pTile->w))
+			{
+				pObj->StopX();
+				pObj->SetX(pTile->x + pTile->w);
+			}
+		}
 	}
 }
 

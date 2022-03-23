@@ -27,6 +27,7 @@ public:
 	double GetVelY();
 
 private:
+	double angle = 0;
 	bool isGrounded, isFacingLeft;
 	double accelX, accelY,
 		velX, velY,

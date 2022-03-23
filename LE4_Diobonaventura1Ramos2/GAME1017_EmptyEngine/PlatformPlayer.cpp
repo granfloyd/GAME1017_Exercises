@@ -2,14 +2,14 @@
 #include "EventMAnager.h"
 #include "TextureManager.h"
 #include <cmath>
-//45-50mins in video week7
+
 
 PlatformPlayer::PlatformPlayer(SDL_Rect s, SDL_FRect d) :AnimatedSpriteObject(s, d),
 state(STATE_JUMPING),isGrounded(false),isFacingLeft(false),
 maxVelX(9.0),maxVelY(JUMPFORCE),grav(GRAVITY),drag(0.85)
 {
 	accelX = accelY = velX = velY = 0.0;
-	//setanimation(?,?,?);inti jump ani
+	SetAnimation(2,0,10);//inti jump ani
 }
 
 void PlatformPlayer::Update()
@@ -21,7 +21,7 @@ void PlatformPlayer::Update()
 		if(EVMA::KeyPressed(SDL_SCANCODE_A)|| EVMA::KeyPressed(SDL_SCANCODE_D))
 		{
 			state = STATE_RUNNING;
-			//SetAnimation(?,?,?,?)
+			SetAnimation(2, 0, 9, 0 );
 		}
 		//trans to jump
 		else if (EVMA::KeyPressed(SDL_SCANCODE_SPACE)&& isGrounded)
@@ -29,7 +29,7 @@ void PlatformPlayer::Update()
 			accelY = -JUMPFORCE;
 			isGrounded = false;
 			state = STATE_JUMPING;
-			//SetAnimation(?,?,?,?)
+			SetAnimation(2,8,9,0);
 		}
 		break;
 	case STATE_RUNNING:
@@ -50,6 +50,7 @@ void PlatformPlayer::Update()
 		if (!EVMA::KeyHeld(SDL_SCANCODE_A) && !EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
 			state = STATE_IDLING;
+			SetAnimation(1, 0, 1, 0);
 		}
 		//trans to jump
 		else if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && isGrounded)
@@ -57,7 +58,7 @@ void PlatformPlayer::Update()
 			accelY = -JUMPFORCE;
 			isGrounded = false;
 			state = STATE_JUMPING;
-			//SetAnimation(?,?,?,?)
+			SetAnimation(2, 8,9, 0);
 		}
 		break;
 	case STATE_JUMPING:
@@ -76,7 +77,7 @@ void PlatformPlayer::Update()
 		if (isGrounded)//transition to run
 		{
 			state = STATE_RUNNING;//could also be idle
-			//SetAnimation(?,?,?,?)
+			SetAnimation(2, 0, 9, 0);
 		}
 		break;
 
@@ -84,7 +85,6 @@ void PlatformPlayer::Update()
 	//player movement universal for all states x-axis first
 	velX += accelX;///add acceleration to velocity
 	velX *= (isGrounded ? drag : 1.0);
-	//if (std::abs(velX) < 0.1)velX = 0.0;
 	velX = std::min(std::max(velX, -maxVelX), maxVelX);
 	m_dst.x += (float)velX;
 	//wrap the player on screen here
@@ -95,15 +95,16 @@ void PlatformPlayer::Update()
 	m_dst.y += (float)velY;
 
 	accelX = accelY = 0.0;
-	//animate();
+	Animate();
 }
 
 void PlatformPlayer::Render()
 {
 	//to animate the sprite use SDL_RENDERCOPYExF() and you will have to acess the texturemanager and pass in a key such as "player"
+	SDL_RenderCopyExF(Engine::Instance().GetRenderer(), TEMA::GetTexture("player"), &m_src, &m_dst, angle,nullptr, SDL_FLIP_NONE);
 	//for this part were just gonna use a colored square
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 0,255);
-	SDL_RenderFillRectF(Engine::Instance().GetRenderer(), &m_dst);
+	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 0,255);
+	//SDL_RenderFillRectF(Engine::Instance().GetRenderer(), &m_dst);
 }
 
 void PlatformPlayer::Stop()

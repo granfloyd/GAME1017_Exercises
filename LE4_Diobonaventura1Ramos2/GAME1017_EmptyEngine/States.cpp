@@ -7,7 +7,7 @@
 #include "SoundManager.h"
 #include "Primitives.h"
 #include "Button3.h"
-
+#include "PlatformPlayer.h"
 #include <iostream>
 using namespace std;
 
@@ -89,8 +89,11 @@ GameState::GameState(){}
 void GameState::Enter() // Used for initialization.
 {
 	TEMA::Load("Img/Tiles.png", "tiles");
-	m_objects.push_back(pair<string,GameObject*>("level",new TiledLevel(
-	24,32,32,32,"Dat/Tiledata.txt","Dat/Level1.txt","tiles")));
+	//load player img and give it a key string of "player"
+	m_objects.push_back(pair<string, GameObject*>("level", new TiledLevel(
+		24, 32, 32, 32, "Dat/Tiledata.txt", "Dat/Level1.txt", "tiles")));
+	m_objects.push_back(pair<string,GameObject*>("player",new PlatformPlayer(
+		{ 0,0,0,0 }, {288,480,64,64})));
 	
 }
 

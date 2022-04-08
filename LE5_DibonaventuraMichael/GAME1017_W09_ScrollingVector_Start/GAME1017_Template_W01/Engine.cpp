@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include <iostream>
 #include <ctime>
+
 #define WIDTH 1024
 #define HEIGHT 768
 #define FPS 60
@@ -34,14 +35,20 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	srand((unsigned)time(NULL)); // Seed random number sequence.
 	
 	// Create the vector now.
-	vec.reserve(9);
-	for (int i = 0; i < 9;i++)
-	{
-		vec.push_back(new Box({ 128*i, 384 }));
-	}
-	//set the gap properties
-	gapCounter = 0;
-	gapMax = 3;
+	m_vec.reserve(9);
+	for (int i = 0; i < 9; i++)
+		m_vec.push_back(new Box({128*i, 384}));
+
+	//Create the map of Boxes with sprites
+	m_protoBox.emplace("saw", new Box({ 1024, 384 }, true, { 1024, 384, 128, 128 }, {255, 0, 64, 255}) );
+	m_protoBox.emplace("spike_wall", new Box( { 1024, 384 }, true, { 1056, 0, 64, 384 }, {64, 255, 32,255}) );
+	m_protoBox.emplace("spike_lg", new Box({ 1024, 384 }, true, { 1024, 384, 128, 64 }, { 234, 215, 84,255 }) );
+	m_protoBox.emplace("spike_sml", new Box({ 1024, 384 }, true, { 1056, 480, 64, 32 }, { 16, 186, 252,255 }) );
+
+	//Set the gap properties
+	m_gapCtr = 0;
+	m_gapMax = 3;
+
 	m_bRunning = true; // Everything is okay, start the engine.
 	cout << "Init success!" << endl;
 	return true;
@@ -95,26 +102,27 @@ bool Engine::KeyDown(SDL_Scancode c)
 void Engine::Update()
 {
 	// Check if first column of main vector goes out of bounds.
-	if (vec[0]->GetPos().x <= -128)
+	if(m_vec[0]->GetPos().x <= -128)
 	{
-		//pop the first element off 
-		delete vec[0];//deallocates box
-		vec.erase(vec.begin());// "pop_front"
-		//add a new Box to the end 
-		if (gapCounter++ % gapMax == 0)//create box with sprite
+		//Pop the first element/column off
+		delete m_vec[0]; //deallocates box
+		m_vec.erase(m_vec.begin()); //"pop_front"
+
+		//Add a new Box to the end
+		if (m_gapCtr++ % m_gapMax == 0)
 		{
-			SDL_Color col = { 100 + rand() % 156,
-				100 + rand() % 156 ,100 + rand() % 156,255 };
-			vec.push_back(new Box({ 1024,384 },true,
-				{ 1024,384,128,128 },col));
+			SDL_Color col = { 100 + rand() % 156, 100 + rand() % 156, 100 + rand() % 156, 255 };
+			//m_vec.push_back(new Box({ 1024, 384 }, true, { 1024, 384, 128, 128 }, col));
+
+			//Instead of this, pick a random clone from map of a Box*
+			m_vec.push_back(m_protoBox[ m_keys[rand()% 4] ]->Clone() );
 		}
-		else vec.push_back(new Box({ 1024, 384 }));//empty box
+		else
+			m_vec.push_back(new Box({ 1024, 384 }));
 	}
-	// update the boxes that scoll themselves.
-	for (unsigned int i = 0; i < vec.size();i++)
-	vec[i]->Update();
-	
-	
+	// Scroll the boxes. (Does it by themselves)
+	for (unsigned int i = 0; i < m_vec.size(); i++)
+		m_vec[i]->Update();
 }
 
 void Engine::Render()
@@ -122,8 +130,8 @@ void Engine::Render()
 	SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(m_pRenderer); // Clear the screen with the draw color.
 	// Render stuff.
-	for (unsigned int i = 0; i < vec.size();i++)
-		vec[i]->Render();
+	for (unsigned int i = 0; i < m_vec.size(); i++)
+		m_vec[i]->Render();
 	// Draw anew.
 	SDL_RenderPresent(m_pRenderer);
 }
@@ -131,12 +139,14 @@ void Engine::Render()
 void Engine::Clean()
 {
 	cout << "Cleaning game." << endl;
-	for (unsigned int i = 0; i < vec.size();i++)
+
+	for (unsigned int i = 0; i < m_vec.size(); i++)
 	{
-		delete vec[i];
-		vec[i] = nullptr;
+		delete m_vec[i];
+		m_vec[i] = nullptr;
 	}
-	vec.clear();
+	m_vec.clear(); //clears out vector
+	m_vec.shrink_to_fit(); //optional
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
 	SDL_Quit();

@@ -1,57 +1,61 @@
 #include "Box.h"
 #include "Engine.h"
 #define SCROLLSPEED 2
-//note can chnage default values to the parameters and not need a default constructor
-Sprite::Sprite() :dst({ 0,0,0,0 }),color({255,255,255,255}){}
-Sprite::Sprite(const SDL_Rect r, const SDL_Color c):dst(r),color(c){}
+
+Sprite::Sprite() :m_dst({0, 0, 0, 0}), m_color({255, 255, 255, 255}) {}
+
+Sprite::Sprite(const SDL_Rect r, const SDL_Color c) :m_dst(r), m_color(c) {}
 
 void Sprite::Render()
 {
-	//for this initial lab we are just drawing rectangles 
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), color.r, color.g, color.b, color.a);
-	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &dst);
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), m_color.r, m_color.g, m_color.b, m_color.a);
+	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &m_dst);
 }
 
-Box::Box(SDL_Point p, bool makeSprite, const SDL_Rect r, const SDL_Color c): pos(p),pSprite(nullptr)//note r and c are for Sprite
+Box::Box(const SDL_Point p, bool makeSprite, const SDL_Rect r, const SDL_Color c) :m_pos(p), m_pSprite(nullptr) //Note r and c are for Sprite
 {
-	if (makeSprite)
+	if(makeSprite)
 	{
-		// if making a dynamic array pSprite = new Sprite[size of stuff]
-		pSprite = new Sprite( r, c );
+		//m_pSprite = new Sprite[m_numSprites]; // for dynamic array
+		m_pSprite = new Sprite(r, c);
 	}
 }
 
 Box::~Box()
 {
-	if (pSprite != nullptr)
+	if(m_pSprite != nullptr)
 	{
-		delete pSprite;
+		delete m_pSprite;
 	}
 }
 
 Box* Box::Clone()
 {
-	return nullptr;//week 10 crap
+	Box* clone = new Box(this->m_pos, false); //Deep copy for brand new Box object
+	clone->m_pSprite = new Sprite(this->m_pSprite->m_dst, m_pSprite->m_color);
+	return clone;
 }
 
 void Box::Update()
 {
-	pos.x -= SCROLLSPEED;
-	if (pSprite != nullptr)
-	{		
-		pSprite->dst.x = pos.x;
+	m_pos.x -= SCROLLSPEED;
+	if (m_pSprite != nullptr)
+	{
+		m_pSprite->m_dst.x -= SCROLLSPEED;
 	}
-
 }
 
 void Box::Render()
 {
-	if (pSprite != nullptr)
+	if (m_pSprite != nullptr)
 	{
-		pSprite->Render();
+		m_pSprite->Render();
 	}
-	//to render a border around each BOx.../
-	SDL_Rect dst = { pos.x, pos.y,128,128 };
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(),156,230,200,255);
-	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &dst);
+
+	//Border for Each Box
+	SDL_Rect dst = { m_pos.x, m_pos.y, 128, 128 };
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 156, 230, 200, 255);
+	SDL_RenderDrawRect(Engine::Instance().GetRenderer(), &dst);
 }
+
+
